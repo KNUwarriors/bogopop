@@ -1,0 +1,86 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;  /* 배경 투명하게 */
+    padding-bottom: 5px;
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.7);
+}
+
+.navbarLeft {
+    display: flex;
+    align-items: center;
+}
+
+.navbarLogo {
+    display: flex;
+    align-items: center;
+    margin-left: 3px;
+}
+
+.logoImage {
+    width: 45px;
+    height: auto;
+}
+
+.logoText {
+    color: white;
+    font-size: 15px;
+    font-family: '강원교육튼튼', sans-serif;
+    margin: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.navbarMenu {
+    color: white;
+    margin: 0 40px;
+    font-size: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.navbarRight {
+    display: flex;
+    align-items: center;
+}
+
+.userButton {
+    text-decoration: none;
+}
+
+.userImage {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 5px;
+    align-items: center;
+}
+
+.searchBar {
+    padding: 8px;
+    width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    color:white;    /* 글자색 */
+    margin-right: 3px;
+}
+
+.searchButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-right: 15px;
+}
+
+.searchIcon {
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+}
