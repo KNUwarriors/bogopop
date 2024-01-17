@@ -1,0 +1,21 @@
+/* signin.css */
+.modal-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;   /* 팝업 창 크기 조절 삐 */
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    pointer-events: auto;   /* 바깥 클릭 시 창 닫히게 */
+}
+
+.modal-content {
+    background-color: transparent;
+    color: white;
+    padding: 50px;
+}
