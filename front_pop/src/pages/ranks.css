@@ -1,3 +1,105 @@
-h1 {
-    color: white;
+.ranks-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    color: #fff;
+    padding: 20px;
+}
+
+.rank-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.rank-item {
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+    align-items: center;
+    display: flex;
+}
+
+.movie-poster {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.movie-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    align-items: flex-start;
+}
+
+.movie-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.star-rating {
+    display: flex;
+}
+
+.star {
+    width: 30px;
+    /* 별 크기 조절 */
+    height: 30px;
+    /* 별 크기 조절 */
+    margin-right: 2px;
+    /* 별 사이 간격 조절 */
+}
+
+.yellow-star {
+    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_pop.png');
+    /* 노란색 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
+.grey-star {
+    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_half.png');
+    /* 회색 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
+.black-star {
+    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_unpop.png');
+    /* 까만 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
+.user-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.user-name {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    font-size: 20px;
+    font-weight: bold;
+    align-items: flex-start;
+}
+
+button {
+    background-color: #fff;
+    color: #000;
+    padding: 8px 16px;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: #555;
+    color: #fff;
 }
