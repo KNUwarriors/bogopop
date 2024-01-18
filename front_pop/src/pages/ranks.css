@@ -14,6 +14,12 @@
     text-align: center;
 }
 
+.link-style {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #ffffff; /* 링크 색상을 하얀색으로 설정 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이도록 설정 */
+}
+
 .rank-item {
     width: 300px;
     height: 200px;
@@ -37,7 +43,7 @@
 }
 
 .movie-title {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
 }
 

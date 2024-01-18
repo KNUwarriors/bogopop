@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './ranks.css';
 
 function Ranks() {
@@ -10,7 +11,6 @@ function Ranks() {
         { id: 5, title: '짱구', poster: '/img/poster_5.jpg', rating: 3.7 },
         { id: 6, title: '콜바넴', poster: '/img/poster_6.jpg', rating: 3.4 },
         { id: 7, title: '작은 아씨들', poster: '/img/poster_7.jpg', rating: 2.6 },
-
     ];
 
     const userData = [
@@ -73,13 +73,15 @@ function Ranks() {
             <div className="rank-section">
                 <h1>영화 랭킹</h1>
                 {movieData.slice(0, movieCount).map((movie) => (
-                    <div key={movie.id} className="rank-item">
-                        <img src={movie.poster} alt={movie.title} className='movie-poster' />
-                        <div className='movie-info'>
-                            <h3>{movie.title}</h3>
-                            <div className="star-rating">{renderStars(movie.rating)}</div>
+                    <Link key={movie.id} to={`/movies/${movie.id}`} className='link-style'>
+                        <div className="rank-item">
+                            <img src={movie.poster} alt={movie.title} className='movie-poster' />
+                            <div className='movie-info'>
+                                <h3>{movie.title}</h3>
+                                <div className="star-rating">{renderStars(movie.rating)}</div>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
                 {movieCount < movieData.length && (
                     <button onClick={handleMovieMoreClick}>더 보기</button>

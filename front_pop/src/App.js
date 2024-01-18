@@ -5,6 +5,7 @@ import Main from './pages/Main';
 import Movies from './pages/Movies';
 import Ranks from './pages/Ranks';
 import Lists from './pages/Lists';
+import MovieDetails from './pages/MovieDetails';
 import User from './pages/User';
 import SignIn from './components/SignIn';
 
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/movies" element={<Movies />} />
                     <Route path="/ranks" element={<Ranks />} />
                     <Route path="/lists" element={<Lists />} />
+                    <Route path="/movies/:id" element={<MovieDetails />} />
                     <Route path="/user" element={<User />} />
                     <Route path="/login"
                         element={<SignIn isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} onClose={closeModal} />}

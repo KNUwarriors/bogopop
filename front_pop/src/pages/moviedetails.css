@@ -1,0 +1,43 @@
+.movie-details-container {
+    display: flex;
+
+}
+
+.poster-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 50px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.poster-img {
+    width: 250px;
+    height: auto;
+}
+
+.ratings {
+    color: white;
+    margin: 20px;
+}
+
+.info-container {
+    flex: 2;
+    margin-top: 10px;
+    margin-left: 5%;
+    margin-right: 10%;
+    overflow-y: auto;
+}
+
+.movie-title{
+    color: white;
+    font-size: 50px;
+}
+
+.content {
+    color: white;
+    font-size: 25px;
+}
