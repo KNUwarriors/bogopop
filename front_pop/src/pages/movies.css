@@ -1,7 +1,9 @@
 .movie-container {
     position: relative;
     overflow: hidden;
-    margin: 30px;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .movie-container h2 {
