@@ -27,12 +27,16 @@
 .info-container {
     flex: 2;
     margin-top: 10px;
-    margin-left: 5%;
-    margin-right: 10%;
+    margin-left: 3%;
+    margin-right: 3%;
     overflow-y: auto;
 }
 
-.movie-title{
+.info-section {
+    margin-right: 15%;
+}
+
+.movie-title {
     color: white;
     font-size: 50px;
 }

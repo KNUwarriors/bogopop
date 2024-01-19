@@ -58,7 +58,7 @@
     height: auto;
 }
 
-.scrollButton {
+.scrollButton_main {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -71,14 +71,14 @@
     z-index: 1;
 }
 
-.scrollButton.left {
+.scrollButton_main.left {
     left: 0;
 }
 
-.scrollButton.right {
+.scrollButton_main.right {
     right: 0;
 }
 
-.scrollButton:hover {
+.scrollButton_main:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
