@@ -48,7 +48,7 @@ function Main() {
         <div>
             <Link className='MainTopImage' to={'/'}>
                 <div className='gradientOverlay'></div>
-                <img src='/img/오펜하이머.jpg' alt="MainImage" className="mainImage" />
+                <img src='/img/MainTop.jpg' alt="MainImage" className="mainImage" />
                 <div className='textOverlay'><h2>오펜하이머</h2></div>
             </Link>
 
