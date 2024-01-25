@@ -3,6 +3,17 @@ import './main.css';
 import { Link } from 'react-router-dom';
 
 function Main() {
+
+    const movieData = [
+        { id: 1, title: '위시', poster: '/img/poster_1.jpg', rating: 4.9 },
+        { id: 2, title: '로키', poster: '/img/poster_2.jpg', rating: 4.5 },
+        { id: 3, title: '오펜하이머', poster: '/img/poster_3.jpg', rating: 4.3 },
+        { id: 4, title: '아메리칸 셰프', poster: '/img/poster_4.jpg', rating: 4.1 },
+        { id: 5, title: '짱구', poster: '/img/poster_5.jpg', rating: 3.7 },
+        { id: 6, title: '콜바넴', poster: '/img/poster_6.jpg', rating: 3.4 },
+        { id: 7, title: '작은 아씨들', poster: '/img/poster_7.jpg', rating: 2.6 },
+    ];
+
     const containerRef = useRef(null);
     const [isLeftButtonVisible, setIsLeftButtonVisible] = useState(true);
     const [isRightButtonVisible, setIsRightButtonVisible] = useState(true);
@@ -10,7 +21,6 @@ function Main() {
     const handleScroll = () => {
         const container = containerRef.current;
         const maxScrollLeft = container.scrollWidth - container.clientWidth;
-
         setIsLeftButtonVisible(container.scrollLeft > 0);
         setIsRightButtonVisible(container.scrollLeft < maxScrollLeft);
     };
@@ -38,7 +48,7 @@ function Main() {
         <div>
             <Link className='MainTopImage' to={'/'}>
                 <div className='gradientOverlay'></div>
-                <img src='/img/오펜하이머.jpg' alt="MainImage" className="mainImage" />
+                <img src='/img/MainTop.jpg' alt="MainImage" className="mainImage" />
                 <div className='textOverlay'><h2>오펜하이머</h2></div>
             </Link>
 
@@ -46,60 +56,19 @@ function Main() {
 
             <div className='MainPopularWrapper'>
                 {isLeftButtonVisible && (
-                    <button className="scrollButton left" onClick={() => scroll('left')}>&lt;</button>
+                    <button className="scrollButton_main left" onClick={() => scroll('left')}>&lt;</button>
                 )}
                 <div className='MainPopular' ref={containerRef}>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_1.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_2.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_3.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_4.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_5.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_6.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_7.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_8.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_1.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_2.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_3.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_4.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_5.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_6.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_7.jpg' alt="Movie 1" />
-                    </div>
-                    <div className='moviePoster'>
-                        <img src='/img/poster_8.jpg' alt="Movie 1" />
-                    </div>
+                    {movieData.map((movie) => (
+                        <Link key={movie.id} to={`/movies/${movie.id}`}>
+                            <div className="moviePoster">
+                                <img src={movie.poster} alt={movie.title} />
+                            </div>
+                        </Link>
+                    ))}
                 </div>
                 {isRightButtonVisible && (
-                    <button className="scrollButton right" onClick={() => scroll('right')}>&gt;</button>
+                    <button className="scrollButton_main right" onClick={() => scroll('right')}>&gt;</button>
                 )}
             </div>
         </div>

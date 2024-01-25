@@ -1,7 +1,8 @@
-.UserTopImage {
+.UserTop {
     position: relative;
     display: block;
     overflow: visible;
+    margin-bottom: 150px;
 }
 
 .gradientOverlay {
@@ -20,13 +21,90 @@
     object-fit: cover;
 }
 
-.UserImage {
+.UserProfile {
     position: absolute;
-    bottom: -50px;
+    display: flex;
+    align-items: end;
+    bottom: -20%;
     left: 20%;
+
+}
+
+.UserImage {
+    flex: 0 0 150px;
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    margin-right: 5px;
-    align-items: center;
+    margin-right: 30px;
+}
+
+.UserName {
+    flex: 2;
+    font-size: 50px;
+    color: white;
+}
+
+.UserBottom {
+    position: relative;
+    display: block;
+    margin: 10%;
+}
+
+.favorites-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.favorites-container h2 {
+    color: white;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.favorites-container hr {
+    height: 1px;
+    border: 0;
+    background: white;
+}
+
+.favorites {
+    display: flex;
+    overflow-x: hidden;
+    margin-top: 20px;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+}
+
+.MoviePoster {
+    margin: 0 10px;
+}
+
+.MoviePoster img {
+    width: 150px;
+    height: auto;
+}
+
+.scrollButton {
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.scrollButton.left {
+    left: 0;
+}
+
+.scrollButton.right {
+    right: 0;
+}
+
+.scrollButton:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
