@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-$END$
+<div class="container">
+    <form method="post" th:action="@{/signup}">
+        <div class="form-group">
+            <input type="text" id="email" name="email" placeholder="메일을 입력하세요">
+            <input type="text" id="password" name="password" placeholder="비밀번호를 입력하세요">
+            <input type="text" id="nickname" name="nickname" placeholder="이름을 입력하세요">
+            <input type="text" id="profile" name="profile" placeholder="프로필을 입력하세요">
+            <input type="text" id="background" name="background" placeholder="배경을 입력하세요">
+        </div>
+        <button type="submit">회원가입</button>
+    </form>
+</div> <!-- /container -->
 </body>
 </html>
