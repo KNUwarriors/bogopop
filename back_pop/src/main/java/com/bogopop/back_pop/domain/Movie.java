@@ -3,8 +3,6 @@ package com.bogopop.back_pop.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
@@ -23,8 +21,6 @@ public class Movie {
 
     private String release_date;
 
-    //오버뷰는 기니까 large object 어노테이션 추가해주자
-    @Lob
     private String overview;
 
     private int runtime;

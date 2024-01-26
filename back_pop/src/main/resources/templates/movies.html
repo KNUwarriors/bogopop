@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+</head>
+<body>
+<h1>Movies</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Korean Title</th>
+        <th>Original Title</th>
+        <!-- Add other columns as needed -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="movie : ${movies}">
+        <td th:text="${movie.id}"></td>
+        <td th:text="${movie.korean_title}"></td>
+        <td th:text="${movie.original_title}"></td>
+        <!-- Add other columns as needed -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
