@@ -26,10 +26,4 @@ public class MovieController {
         return movieService.getAllMovies();
     }
 
-    @GetMapping("/movies/{id}")
-    @ApiOperation("특정 id의 영화 정보를 가져오는 메소드")
-    @ResponseBody
-    public Optional<Movie> getMovieById(@PathVariable Long id) {
-        return movieService.getMovieById(id);
-    }
 }
