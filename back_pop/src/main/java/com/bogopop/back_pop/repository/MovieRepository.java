@@ -11,5 +11,4 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     //id 오름차순으로 영화 전부다 가져오기
     List<Movie> findAll();
 
-    Optional<Movie> findById(Long id); // Retrieve a movie by its ID
 }

@@ -18,8 +18,5 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
-    // 영화 id로 영화 조회
-    public Optional<Movie> getMovieById(Long id) {
-        return movieRepository.findById(id);
-    }
+
 }
