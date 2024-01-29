@@ -62,19 +62,19 @@
 }
 
 .yellow-star {
-    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_pop.png');
+    background-image: url('/public/img/corn_pop.png');
     /* 노란색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .grey-star {
-    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_half.png');
+    background-image: url('/public/img/corn_half.png');
     /* 회색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .black-star {
-    background-image: url('C:\Users\younh\OneDrive\바탕 화면\bogopop\bogopop\front_pop\public\img\corn_unpop.png');
+    background-image: url('/public/img/corn_unpop.png');
     /* 까만 별 이미지 경로 지정 */
     background-size: cover;
 }
