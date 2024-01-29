@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor // Lombok 어노테이션: 기본 생성자 자동 추가
 @Getter @Setter // Lombok 어노테이션: 클래스 내 모든 필드들의 Getter, Setter 자동 생성
+@EntityListeners(AuditingEntityListener.class) // JPA Entity에서 이벤트가 발생할 때마다 특정 로직을 실행시킬 수 있는 어노테이션. 즉, AuditingEntityListener 클래스가 callback listener로 지정되어 Entity에서 이벤트가 발생할 때마다 특정 로직을 수행하게 된다.
 @Table(name = "User")
 public class User {
     @Id // 해당 테이블의 PK 필드
@@ -39,9 +41,9 @@ public class User {
     private String my_reviews;
 
     @Column(nullable = false)
-    @CreatedDate
+    @CreatedDate // Entity가 생성되어 저장될 때 시간이 자동으로 저장
     private LocalDateTime generated_date;
 
-    @LastModifiedDate
+    @LastModifiedDate // 조회한 Entity의 값을 변경할 때 시간이 자동으로 저장
     private LocalDateTime modified_date;
 }
