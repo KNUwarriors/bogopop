@@ -17,10 +17,11 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("/movies")
-    @ApiOperation("모든 영화 정보를(id 오름차순) 가져오는 메소드")
     public String getAllMovies(Model model) {
-        List<Movie> movies = movieService.getAllMoviesOrderedById();
+        List<Movie> movies = movieService.getAllMovies();
+
         model.addAttribute("movies", movies);
         return "movies";
     }
 }
+

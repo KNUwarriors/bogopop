@@ -14,7 +14,7 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     //영화id 오름차순으로 모두 출력
-    public List<Movie> getAllMoviesOrderedById() {
-        return movieRepository.findAllByOrderByIdAsc();
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
     }
 }
