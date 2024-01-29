@@ -18,8 +18,5 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> e4bd520e73d61d6eabce7a89c445f28b6ebb5bdf
 }
