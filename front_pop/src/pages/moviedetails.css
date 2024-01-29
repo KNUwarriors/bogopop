@@ -18,10 +18,42 @@
     height: auto;
 }
 
-.ratings {
+.star-rating {
+    display: flex;
     color: white;
-    margin: 20px;
+    align-items: center;
+    font-size: 17px;
+    font-weight: lighter;
+    margin-top: 10px;
 }
+
+.star {
+    width: 40px;
+    /* 별 크기 조절 */
+    height: 40px;
+    /* 별 크기 조절 */
+    margin-right: 2px;
+    /* 별 사이 간격 조절 */
+}
+
+.yellow-star {
+    background-image: url('/public/img/corn_pop.png');
+    /* 노란색 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
+.grey-star {
+    background-image: url('/public/img/corn_half.png');
+    /* 회색 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
+.black-star {
+    background-image: url('/public/img/corn_unpop.png');
+    /* 까만 별 이미지 경로 지정 */
+    background-size: cover;
+}
+
 
 .info-container {
     flex: 2;
