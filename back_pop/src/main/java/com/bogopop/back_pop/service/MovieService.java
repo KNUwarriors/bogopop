@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -16,5 +17,9 @@ public class MovieService {
     //영화id 오름차순으로 모두 출력
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
+    }
+    // 영화 id로 영화 조회
+    public Optional<Movie> getMovieById(Long id) {
+        return movieRepository.findById(id);
     }
 }

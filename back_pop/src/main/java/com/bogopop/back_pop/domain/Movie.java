@@ -38,13 +38,10 @@ public class Movie {
     private String cast;
     private String trailer;
 
-<<<<<<< HEAD
-}
-=======
     @Column(nullable = false)
     private Long likes;
 
     @Column(nullable = false)
     private Long pop_score;
 }
->>>>>>> bf3fc42eafa889fa4775cc8d6db64f2d9f8fb7e8
+
