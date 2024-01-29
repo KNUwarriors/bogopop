@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
-
 import Navbar from './components/Navbar';
 import Main from './pages/Main';
 import Movies from './pages/Movies';
@@ -12,7 +11,6 @@ import User from './pages/User';
 import SignIn from './components/SignIn';
 
 function App() {
-    const [data, setData] = useState('');
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [LoginPopup, setLoginPopup] = useState(false);
 
@@ -28,11 +26,6 @@ function App() {
         setLoginPopup(false);
     };
 
-    useEffect(() => {
-        axios.get('/api/data')
-            .then(res => setData(res.data))
-            .catch(err => console.log(err))
-    }, []);
 
     return (
         <BrowserRouter>
@@ -50,7 +43,6 @@ function App() {
                         element={<SignIn isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} onClose={closeModal} />}
                     />
                 </Routes>
-                <div>{data}</div>
             </div>
 
         </BrowserRouter>
