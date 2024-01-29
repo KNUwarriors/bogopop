@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import './moviedetails.css'; // 스타일 파일을 불러옵니다.
@@ -16,12 +16,15 @@ function MovieDetails() {
                 const moviesWithImages = response.data.map(movie => ({
                     id: movie.id,
                     korean_title: movie.korean_title,
+                    original_title: movie.original_title,
                     poster_path: movie.poster_path,
                     pop_score: movie.pop_score,
                     overview: movie.overview,
-                    directors: movie.directors,
-                    cast: movie.cast,
-                    trailer: movie.trailer
+                    release_year: movie.release_date.slice(0, 4),
+                    release_date: movie.release_date,
+                    directors: formatArrayToString(movie.directors),
+                    cast: formatArrayToString(movie.cast),
+                    trailer: getVideoIdFromUrl(movie.trailer),
                 }));
 
                 setMovieData(moviesWithImages);
@@ -48,10 +51,27 @@ function MovieDetails() {
             </div>
             <div className='info-container'>
                 <div className="info-section">
-                    <h2 className='korean_title'>{movie.korean_title}</h2>
-                    <h2 className='overview'>{movie.overview}</h2>
-                    <p className='directors'>{movie.directors}</p>
-                    <p className='cast'>{movie.cast}</p>
+                    <div className='title-section'>
+                        <h2 className='korean_title'>{movie.korean_title}</h2>
+                        <p className='release_year'>{movie.release_year}</p>
+                    </div>
+                    <p className='original_title'>{movie.original_title}</p>
+                    <YouTube
+                        videoId={movie.trailer}
+                        opts={{
+                            width: "560",
+                            height: "315",
+                            playerVars: {
+                                autoplay: 1,
+                                rel: 0,
+                                modestbranding: 1,
+                            },
+                        }}
+                        onEnd={(e) => { e.target.stopVideo(0); }}
+                    />
+                    <p className='overview'>{movie.overview}</p>
+                    <p className='directors'>감독: {movie.directors}</p>
+                    <p className='cast'>출연진: {movie.cast}</p>
 
                 </div>
             </div>
@@ -61,3 +81,17 @@ function MovieDetails() {
 }
 
 export default MovieDetails;
+
+function formatArrayToString(str) {
+    if (typeof str === 'string') {
+        // 대괄호와 작은 따옴표 제거
+        return str.replace(/[\[\]']+/g, '').trim();
+    }
+    return str; // 문자열이 아닌 경우 그대로 반환
+}
+
+// YouTube URL에서 videoId 추출하는 함수
+function getVideoIdFromUrl(url) {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+    return match ? match[1] : null;
+}
