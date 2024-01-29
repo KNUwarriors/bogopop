@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @ApiOperation("회원가입")
-    public String getAllUsers(Model model) {
+    @ApiOperation("회원목록")
+    public String allUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
