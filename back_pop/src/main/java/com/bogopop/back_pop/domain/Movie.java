@@ -34,8 +34,13 @@ public class Movie {
     private Long TMDB_id;
 
     private String directors;
-    private String cast;
 
+    private String cast;
     private String trailer;
 
+    @Column(nullable = false)
+    private Long likes;
+
+    @Column(nullable = false)
+    private Long pop_score;
 }
