@@ -34,14 +34,24 @@
 
 .info-section {
     margin-right: 15%;
+    color: white;
 }
 
-.movie-title {
+.korean_title {
     color: white;
     font-size: 50px;
 }
 
-.content {
+.overview {
     color: white;
     font-size: 25px;
+}
+
+.directors {
+    color: white;
+    font-size: 20px;
+}
+.cast {
+    color: white;
+    font-size: 20px;
 }
