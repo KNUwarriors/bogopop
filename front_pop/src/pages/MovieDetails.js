@@ -8,7 +8,6 @@ function MovieDetails() {
     const { id } = useParams();
     const [movieData, setMovieData] = useState([]);
 
-
     useEffect(() => {
         axios.get(`/movies`)
             .then((response) => {
@@ -43,11 +42,48 @@ function MovieDetails() {
         return <div>영화를 찾을 수 없습니다.</div>;
     }
 
+    const renderStars = (rating) => {
+        const stars = [];
+        const fullStars = Math.floor(rating);
+        const decimalPart = rating % 1 * 10;
+        let cnt = 0;
+
+        // 노란 별 추가
+        for (let i = 0; i < fullStars; i++) {
+            stars.push(<div key={`yellow-star-${i}`} className="star yellow-star"></div>);
+            cnt += 1;
+        }
+        if (cnt < 5) {
+            if (decimalPart < 4) {
+                // 평점이 4.0 ~ 4.3인 경우에는 까만 별 1개 추가
+                stars.push(<div key={`black-star`} className="star black-star"></div>);
+                cnt += 1;
+            } else if (decimalPart < 8) {
+                // 평점이 4.4 ~ 4.7인 경우에는 회색 별 1개 추가
+                stars.push(<div key={`grey-star`} className="star grey-star"></div>);
+                cnt += 1;
+            } else {
+                // 그 외에는 노란 별 추가
+                stars.push(<div key={`yellow-star`} className="star yellow-star"></div>);
+                cnt += 1;
+            }
+        }
+
+        if (cnt < 5) {
+            for (let i = 0; i < 5 - cnt; i++) {
+                stars.push(<div key={`black-star`} className="star black-star"></div>);
+            }
+        }
+        return stars;
+    };
+
     return (
         <div className="movie-details-container">
             <div className="poster-section">
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
-                <h3 className='ratings'>평점: {movie.pop_score}</h3>
+
+                <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
+
             </div>
             <div className='info-container'>
                 <div className="info-section">

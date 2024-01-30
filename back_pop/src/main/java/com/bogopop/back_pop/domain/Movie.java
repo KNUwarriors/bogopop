@@ -42,6 +42,6 @@ public class Movie {
     private Long likes;
 
     @Column(nullable = false)
-    private Long pop_score;
+    private float pop_score;
 }
 
