@@ -32,8 +32,23 @@ public class UserController {
         return "users";
     }
 
+
+    /*
+       @GetMapping("/login")
+    public String loginForm(){
+       return "login";
+    }
+    @PostMapping("/login")
+    public String login(UserDto userDto){
+        System.out.println("Received login request with email: " + userDto.getEmail() + " and password: " + userDto.getPassword());
+        userService.login(userDto);
+        return "login";
+    }*/
+
     @RequestMapping("/login")
-    public String login(){
+    public String login(UserDto userDto) {
+        System.out.println("Received login request with email: " + userDto.getEmail() + " and password: " + userDto.getPassword());
+        userService.login(userDto);
         return "login";
     }
 

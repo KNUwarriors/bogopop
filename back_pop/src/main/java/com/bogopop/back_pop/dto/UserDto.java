@@ -21,13 +21,9 @@ public class UserDto {
 
     private String background;
 
-    public void setUserpw(String userpw) {
-        this.password = userpw;
+    @Builder
+    public UserDto(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
-
-    public String getUserpw() {
-        return password;
-    }
-
-
 }

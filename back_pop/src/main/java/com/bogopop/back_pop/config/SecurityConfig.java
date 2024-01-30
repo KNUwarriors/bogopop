@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,6 +21,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,13 +39,18 @@ public class SecurityConfig {
                 )
                 .formLogin((formLogin) ->
                         formLogin
-                                .loginPage("/login/login")
-                                .usernameParameter("username")
+                                .loginPage("/login")
+                                .usernameParameter("email")
                                 .passwordParameter("password")
-                                .loginProcessingUrl("/login/login-proc")
                                 .defaultSuccessUrl("/", true)
-                );
+                )
+                .logout(logout -> logout
+                        .permitAll())
 
+                .authorizeRequests((authorizeRequests)->
+                        authorizeRequests
+                                .requestMatchers("/", "/login").permitAll()
+                                .requestMatchers("/", "/signup").permitAll());
         return http.build();
     }
 
