@@ -21,4 +21,13 @@ public class UserDto {
 
     private String background;
 
+    public void setUserpw(String userpw) {
+        this.password = userpw;
+    }
+
+    public String getUserpw() {
+        return password;
+    }
+
+
 }

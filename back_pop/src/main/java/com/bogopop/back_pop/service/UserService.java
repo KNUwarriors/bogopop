@@ -18,14 +18,19 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-    public User join(UserDto userDto){
-        // 같은 이름이 있는 중복 회원 X
-//        validateDuplicateMember(user); // 중복 회원 검증
 
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User join(UserDto userDto) {
+        userDto.setUserpw(passwordEncoder.encode(userDto.getUserpw()));
         return userRepository.save(
                 User.builder()
                         .email(userDto.getEmail())
-                        .password(passwordEncoder.encode(userDto.getPassword()))
+                        .password(userDto.getUserpw())
                         .nickname(userDto.getNickname())
                         .profile(userDto.getProfile())
                         .background(userDto.getBackground())
