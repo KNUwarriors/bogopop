@@ -4,6 +4,7 @@ import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     public User join(UserDto userDto){
         // 같은 이름이 있는 중복 회원 X
@@ -23,7 +25,7 @@ public class UserService {
         return userRepository.save(
                 User.builder()
                         .email(userDto.getEmail())
-                        .password(userDto.getPassword())
+                        .password(passwordEncoder.encode(userDto.getPassword()))
                         .nickname(userDto.getNickname())
                         .profile(userDto.getProfile())
                         .background(userDto.getBackground())
