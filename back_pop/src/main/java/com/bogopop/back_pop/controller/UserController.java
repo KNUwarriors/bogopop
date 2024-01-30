@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class UserController {
     public String signup(UserDto userDto){
         userService.join(userDto);
         return "users";
+    }
+
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
     }
 
     @GetMapping("/users")
