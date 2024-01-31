@@ -37,13 +37,14 @@ public class SecurityConfig{
                                 frameOptionsConfig.disable()
                         )
                 )
-                .formLogin((formLogin) ->
-                        formLogin
-                                .loginPage("/login")
-                                .usernameParameter("email")
-                                .passwordParameter("password")
-                                .defaultSuccessUrl("/logingood", true)
-                )
+//                .formLogin((formLogin) ->
+//                        formLogin
+//                                .loginPage("/login")
+//                                .usernameParameter("email")
+//                                .passwordParameter("password")
+//                                .defaultSuccessUrl("/logingood", true)
+//                )
+                .formLogin(formLogin -> formLogin.disable())
                 .logout(logout -> logout
                         .permitAll())
 

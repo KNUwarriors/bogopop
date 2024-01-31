@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public User login(UserDto userDto) {
-        logger.debug("userservice activated");
+        System.out.println("userservice activated");
 
         try {
             User user = userRepository.findByEmail(userDto.getEmail())

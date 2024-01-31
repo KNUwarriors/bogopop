@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -40,12 +41,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password){
+    public String login(@RequestParam String username, @RequestParam String password) {
         System.out.println("Received login request with email: " + username + " and password: " + password);
-        // userService.login(userDto); // 이 부분을 수정
         userService.login(new UserDto(username, password));
         return "redirect:/";
     }
+
+
 
 //    @RequestMapping("/login")
 //    public String login(UserDto userDto) {
