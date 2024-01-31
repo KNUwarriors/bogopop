@@ -37,18 +37,18 @@ public class UserService {
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userDto.getEmail()));
 
             if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-                logger.warn("로그인 실패 - 잘못된 비밀번호입니다. 사용자: {}", user.getEmail());
-                throw new BadCredentialsException("잘못된 비밀번호입니다.");
+                logger.warn("login fail - wrong pw. user: {}", user.getEmail());
+                throw new BadCredentialsException("wrong pw");
             }
 
             // 로그인이 성공하면 해당 사용자 정보를 반환
-            logger.info("로그인 성공. 사용자: {}", user.getEmail());
-            logger.debug("로그인 성공. 사용자: {}", userDto.getEmail());
+            logger.info("log-in success. user: {}", user.getEmail());
+            logger.debug("log-in success. user: {}", userDto.getEmail());
 
             return user;
         } catch (UsernameNotFoundException e) {
             // 사용자를 찾을 수 없는 경우
-            logger.warn("로그인 실패 - 사용자를 찾을 수 없습니다. 이메일: {}", userDto.getEmail());
+            logger.warn("login fail - 사용자를 찾을 수 없습니다. 이메일: {}", userDto.getEmail());
             throw e;
         } catch (BadCredentialsException e) {
             // 잘못된 비밀번호
