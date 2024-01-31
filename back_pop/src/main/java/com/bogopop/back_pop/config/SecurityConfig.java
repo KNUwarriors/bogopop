@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SecurityConfig{
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/", true)
+                                .defaultSuccessUrl("/logingood", true)
                 )
                 .logout(logout -> logout
                         .permitAll())

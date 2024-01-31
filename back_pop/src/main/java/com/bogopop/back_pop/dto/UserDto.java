@@ -26,4 +26,5 @@ public class UserDto {
         this.email = email;
         this.password = password;
     }
+
 }

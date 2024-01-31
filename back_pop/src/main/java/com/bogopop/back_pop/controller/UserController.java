@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,24 +33,26 @@ public class UserController {
     }
 
 
-    /*
-       @GetMapping("/login")
+
+    @GetMapping("/login")
     public String loginForm(){
        return "login";
     }
-    @PostMapping("/login")
-    public String login(UserDto userDto){
-        System.out.println("Received login request with email: " + userDto.getEmail() + " and password: " + userDto.getPassword());
-        userService.login(userDto);
-        return "login";
-    }*/
 
-    @RequestMapping("/login")
-    public String login(UserDto userDto) {
-        System.out.println("Received login request with email: " + userDto.getEmail() + " and password: " + userDto.getPassword());
-        userService.login(userDto);
-        return "login";
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password){
+        System.out.println("Received login request with email: " + username + " and password: " + password);
+        // userService.login(userDto); // 이 부분을 수정
+        userService.login(new UserDto(username, password));
+        return "redirect:/";
     }
+
+//    @RequestMapping("/login")
+//    public String login(UserDto userDto) {
+//        System.out.println("Received login request with email: " + userDto.getEmail() + " and password: " + userDto.getPassword());
+//        userService.login(userDto);
+//        return "login";
+//    }
 
     @GetMapping("/users")
     @ApiOperation("회원목록")
