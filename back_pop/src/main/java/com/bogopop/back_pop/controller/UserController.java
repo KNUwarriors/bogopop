@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-        System.out.println("Received login request with email: " + username + " and password: " + password);
-        userService.login(new UserDto(username, password));
+    public String login(@RequestParam String email, @RequestParam String password) {
+        System.out.println("Received login request with email: " + email + " and password: " + password);
+        userService.login(new UserDto(email, password));
         return "redirect:/";
     }
 
