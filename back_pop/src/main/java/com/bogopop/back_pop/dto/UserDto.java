@@ -1,5 +1,6 @@
 package com.bogopop.back_pop.dto;
 
+import com.bogopop.back_pop.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +22,13 @@ public class UserDto {
 
     private String background;
 
+    private Role role;  // 추가된 부분
+
     @Builder
     public UserDto(String email, String password) {
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
 }
