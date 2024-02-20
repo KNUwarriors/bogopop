@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './user.css';
 
 const UserContainer = ({ title, movieData }) => {
@@ -60,6 +61,7 @@ const UserContainer = ({ title, movieData }) => {
 };
 
 function User() {
+    const navigate = useNavigate();
 
     const movieData = [
         { id: 1, title: '위시', poster: '/img/poster_1.jpg', rating: 4.9 },
@@ -78,14 +80,51 @@ function User() {
         // 다른 컨테이너들을 필요한 만큼 추가
     ];
 
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // 토큰이 없으면 로그인 페이지로 리디렉션 또는 에러 처리
+            console.error('토큰이 없습니다. 사용자는 로그인되어 있지 않습니다.');
+            return;
+        }
+
+        const fetchUserData = async () => {
+            try {
+                // 서버로 토큰을 포함한 GET 요청 보냄
+                const response = await axios.get('/user', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                // 응답에서 사용자 데이터 추출
+                const userData = response.data;
+
+                // 사용자 데이터 설정
+                setUserData(userData);
+            } catch (error) {
+                // 요청 실패 시 에러 처리
+                console.error('사용자 데이터를 불러오는 데 실패했습니다:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
             <div className='UserTop'>
                 <div className='gradientOverlay'></div>
-                <img src='/img/오펜하이머.jpg' alt='topimage' className="TopImage" />
+                <img src='/img/MainTop.jpg' alt='topimage' className="TopImage" />
                 <div className='UserProfile'>
                     <img src='/img/poco.png' alt='userimage' className='UserImage' />
-                    <h1 className='UserName'>카더가든</h1>
+                    <h1 className='UserName'>{userData.email}</h1>
                 </div>
             </div>
             <div className='UserBottom'>

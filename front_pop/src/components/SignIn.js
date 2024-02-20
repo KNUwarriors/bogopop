@@ -1,21 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import axios from 'axios';
 import './signin.css'
 
-const Sign = ({ isLoggedIn, setLoggedIn, onClose }) => {
-    const [username, setUsername] = useState('');
+const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const modalRef = useRef(null);
 
-    const handleLogin = () => {
-        setLoggedIn(true);
-        onClose();
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('/login', { email, password });
+            const { token } = response.data;
+
+            localStorage.setItem('token', token);
+            setLoggedIn(true);
+            onClose();
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                setError('Invalid email or password');
+            } else {
+                setError('An error occurred during login');
+            }
+            console.error('Error during login:', error);
+        }
     };
 
     const handleOutsideClick = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
-            console.log('outside clicked')
             onClose();
         }
     };
@@ -35,7 +47,7 @@ const Sign = ({ isLoggedIn, setLoggedIn, onClose }) => {
                 <form>
                     <label>
                         Username:
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </label>
                     <label>
                         Password:
@@ -49,4 +61,4 @@ const Sign = ({ isLoggedIn, setLoggedIn, onClose }) => {
     );
 };
 
-export default Sign;
+export default SignIn;

@@ -81,9 +81,7 @@ function MovieDetails() {
         <div className="movie-details-container">
             <div className="poster-section">
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
-
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
-
             </div>
             <div className='info-container'>
                 <div className="info-section">
