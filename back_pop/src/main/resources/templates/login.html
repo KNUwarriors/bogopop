@@ -1,20 +1,57 @@
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
-    <form th:action="@{/login}" method="post">
-        <div th:if="${param.error}">
-            <div class="alert alert-danger">
-                사용자ID 또는 비밀번호를 확인해 주세요.
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">email</label>
-            <input type="text" name="email" id="email" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">비밀번호</label>
-            <input type="password" name="password" id="password" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">로그인</button>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+</head>
+<body>
+
+<h2>Login Form</h2>
+
+<form id="loginForm">
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="button" onclick="submitForm()">Login</button>
+</form>
+
+<script>
+    function submitForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        var data = {
+            "email": email,
+            "password": password
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/login");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // 로그인 성공
+                    console.log("Login successful");
+                    console.log(xhr.responseText);
+                    // 여기에 로그인 후의 동작을 추가할 수 있습니다.
+                } else {
+                    // 로그인 실패
+                    console.error("Login failed");
+                    console.error(xhr.responseText);
+                    // 여기에 로그인 실패 시의 처리를 추가할 수 있습니다.
+                }
+            }
+        };
+        xhr.send(JSON.stringify(data)); // 데이터를 JSON 문자열로 변환하여 전송
+    }
+</script>
+
+</body>
 </html>

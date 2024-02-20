@@ -23,6 +23,7 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -30,7 +31,7 @@ public class UserService {
     }
 
     public User login(UserDto userDto) {
-        System.out.println("userservice activated");
+        System.out.println("login method activated");
 
         try {
             User user = userRepository.findByEmail(userDto.getEmail())
@@ -62,6 +63,10 @@ public class UserService {
     }
 
     public User join(UserDto userDto) {
+        if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+        }
+
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(
                 User.builder()
@@ -70,11 +75,19 @@ public class UserService {
                         .nickname(userDto.getNickname())
                         .profile(userDto.getProfile())
                         .background(userDto.getBackground())
+                        .role("ROLE_USER")
                         .build()
         );
     }
 
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
 }
