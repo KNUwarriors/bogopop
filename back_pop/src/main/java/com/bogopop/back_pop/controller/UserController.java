@@ -40,6 +40,7 @@ public class UserController {
     @PostMapping("/signup")
     @ApiOperation("회원가입")
     public String signup(UserDto userDto) {
+        System.out.println(userDto);
         userService.join(userDto);
         return "users";
     }
@@ -89,7 +90,19 @@ public class UserController {
             // 사용자를 찾을 수 없는 경우 404 에러를 반환합니다.
             return ResponseEntity.notFound().build();
         }
-
+    // User 객체를 UserDto 객체로 변환하여 반환합니다.
+        UserDto userDto = UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .profile(user.getProfile())
+                .background(user.getBackground())
+                .role(user.getRole())
+                .liked_movies(user.getLiked_movies())
+                .liked_lists(user.getLiked_lists())
+                .my_lists(user.getMy_lists())
+                .my_reviews(user.getMy_reviews())
+                .build();
         return ResponseEntity.ok(user);
     }
 

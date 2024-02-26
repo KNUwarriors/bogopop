@@ -22,6 +22,14 @@ public class UserDto {
 
     private String role;  // 추가된 부분
 
+    private String liked_movies;
+
+    private String liked_lists;
+
+    private String my_lists;
+
+    private String my_reviews;
+
     @Builder
     public UserDto(String email, String password) {
         this.email = email;
