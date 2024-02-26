@@ -8,6 +8,7 @@ function Navbar() {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [LoginPopup, setLoginPopup] = useState(false);
     const [userEmail, setUserEmail] = useState('');
+    const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,6 +41,8 @@ function Navbar() {
                     Authorization: `Bearer ${token}`
                 }
             });
+            // 로컬 스토리지에서 토큰 삭제
+            localStorage.removeItem('token');
             setLoggedIn(false);
             navigate('/main');
         } catch (error) {
@@ -69,11 +72,20 @@ function Navbar() {
 
             // 응답에서 사용자 정보를 가져와 인증 상태 확인
             if (response.status === 200) {
+
                 // 사용자가 인증되어 있는 경우
                 setLoggedIn(true);
+
                 // 사용자 정보에서 이메일 가져오기
                 const userEmail = response.data.email;
                 setUserEmail(userEmail);
+
+                // 응답에서 사용자 데이터 추출
+                const userData = response.data;
+
+                // 사용자 데이터 설정
+                setUserData(userData);
+
             } else {
                 // 사용자가 인증되어 있지 않은 경우
                 setLoggedIn(false);
@@ -106,14 +118,21 @@ function Navbar() {
                     </button>
 
                     {isLoggedIn ? (
-                        <div className='LoginButton' onClick={handleLogout}>로그아웃</div>
+                        <div className='LoginRight'>
+                            <div className='LoginButton' onClick={handleLogout}>로그아웃</div>
+                            <div className='userButton' onClick={handleUserClick}>
+                                <img src={userData.profile} alt="User" className='userImage' />
+                            </div>
+                        </div>
                     ) : (
-                        <div className='LoginButton' onClick={handleUserClick}>로그인</div>
+                        <div className='LoginRight'>
+                            <div className='LoginButton' onClick={handleUserClick}>로그인</div>
+                            <div className='userButton' onClick={handleUserClick}>
+                                <img src='/img/poco.png' alt="User" className='userImage' />
+                            </div>
+                        </div>
                     )}
 
-                    <div className='userButton' onClick={handleUserClick}>
-                        <img src='/img/poco.png' alt="User" className='userImage' />
-                    </div>
                 </div>
                 {LoginPopup && (
                     <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />

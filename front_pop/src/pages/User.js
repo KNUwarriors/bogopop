@@ -121,9 +121,9 @@ function User() {
         <div>
             <div className='UserTop'>
                 <div className='gradientOverlay'></div>
-                <img src='/img/MainTop.jpg' alt='topimage' className="TopImage" />
+                <img src={userData.background} alt='topimage' className="TopImage" />
                 <div className='UserProfile'>
-                    <img src='/img/poco.png' alt='userimage' className='UserImage' />
+                    <img src={userData.profile} alt='userimage' className='UserImage' />
                     <h1 className='UserName'>{userData.email}</h1>
                 </div>
             </div>

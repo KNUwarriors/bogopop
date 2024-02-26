@@ -5,6 +5,8 @@ import './signin.css'
 const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [isFirstTime, setIsFirstTime] = useState(false);
     const [error, setError] = useState('');
     const modalRef = useRef(null);
 
@@ -26,6 +28,33 @@ const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
         }
     };
 
+    const handleFirstTime = () => {
+        setIsFirstTime(true); // Set the state to show the signup form
+    };
+
+    const handleSignUp = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('nickname', nickname);
+            // formData.append('profile', profile);
+            // formData.append('background', background);
+
+            const response = await axios.post('/signup', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            handleLogin();
+            console.log("Response:", response.data);
+        } catch (error) {
+            setError('이미 가입된 이메일입니다.')
+            console.error('Error during sign up:', error);
+        }
+    };
+
+
     const handleOutsideClick = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
             onClose();
@@ -40,6 +69,24 @@ const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
         };
     }, []);
 
+    if (isFirstTime) {
+        return (
+            <div className="modal-overlay" ref={modalRef}>
+                <div className="modal-content">
+                    <h2>Sign Up</h2>
+                    <form>
+                        <label>Email:<input type="text" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
+                        <label>Password:<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></label>
+                        <label>Nickname:<input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} /></label>
+                        {/* <label>Profile:<input type="text" value={profile} onChange={(e) => setProfile(e.target.value)} /></label> */}
+                        {/* <label>Background:<input type="text" value={background} onChange={(e) => setBackground(e.target.value)} /></label> */}
+                        <button type="button" onClick={handleSignUp}>Sign Up</button>
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
+                    </form>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="modal-overlay" ref={modalRef}>
             <div className="modal-content">
@@ -55,6 +102,8 @@ const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
                     </label>
                     <button type="button" onClick={handleLogin}>Login</button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <hr />
+                    <div className='FirstTime' onClick={handleFirstTime}>보고팝이 처음이신가요?</div>
                 </form>
             </div>
         </div>

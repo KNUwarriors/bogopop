@@ -40,9 +40,9 @@ public class User {
     private String my_lists;
     private String my_reviews;
 
-    @Enumerated(EnumType.STRING)  // Enum 타입을 문자열로 저장
-    @Column(nullable = false)
-    private Role role;  // 추가된 부분
+    @Column(nullable = false, columnDefinition = "ENUM('USER', 'ADMIN') DEFAULT 'USER'")
+    private String role;
+
 
     @Column(nullable = false)
     @CreatedDate // Entity가 생성되어 저장될 때 시간이 자동으로 저장

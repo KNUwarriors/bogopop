@@ -50,26 +50,32 @@
     align-items: center;
 }
 
+.LoginRight {
+    display:flex;
+    align-items:center;
+}
+
 .LoginButton {
     color: white;
     margin: 0 15px;
     font-size: 15px;
     text-decoration: none;
-    display: flex;
+    display: inline-block;
     align-items: center;
 }
 
 .userButton {
+    display: inline-block;
+    align-items: center;
     text-decoration: none;
 }
 
 .userImage {
-    display: flex;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     margin-right: 5px;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .searchBar {

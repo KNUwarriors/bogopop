@@ -23,6 +23,7 @@ public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -30,7 +31,7 @@ public class UserService {
     }
 
     public User login(UserDto userDto) {
-        System.out.println("userservice activated");
+        System.out.println("login method activated");
 
         try {
             User user = userRepository.findByEmail(userDto.getEmail())
@@ -62,19 +63,34 @@ public class UserService {
     }
 
     public User join(UserDto userDto) {
+        if (userDto.getPassword() == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+        }
+
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(
                 User.builder()
                         .email(userDto.getEmail())
                         .password(userDto.getPassword())
                         .nickname(userDto.getNickname())
-                        .profile(userDto.getProfile())
-                        .background(userDto.getBackground())
+                        .profile("https://media.istockphoto.com/id/931419844/ko/%EB%B2%A1%ED%84%B0/%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90%EC%84%9C-%EB%B2%A1%ED%84%B0-%ED%8C%9D%EC%BD%98-%EC%95%84%EC%9D%B4%EC%BD%98.jpg?s=612x612&w=0&k=20&c=cZG0AbZOd1_1Wzi_VbJUfTbsn743TPRqbFW4h8kQEus=")
+                        .background("https://image.tmdb.org/t/p/original/h0oBqUpax591vOacpBsDJ8cynjk.jpg")
+                        .role("ROLE_USER")
                         .build()
         );
     }
 
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
 }
