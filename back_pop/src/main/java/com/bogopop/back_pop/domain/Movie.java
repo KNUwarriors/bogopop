@@ -47,7 +47,7 @@ public class Movie {
     @Column(nullable = false)
     private float pop_score;
 
-    private int adult;
+    private boolean adult;
 
 }
 

@@ -3,22 +3,20 @@ package com.bogopop.back_pop.service;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 public class UserService {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -38,26 +36,25 @@ public class UserService {
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userDto.getEmail()));
 
             if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-                logger.warn("login fail - wrong pw. user: {}", user.getEmail());
                 throw new BadCredentialsException("wrong pw");
             }
 
             // 로그인이 성공하면 해당 사용자 정보를 반환
-            logger.info("log-in success. user: {}", user.getEmail());
-            logger.debug("log-in success. user: {}", userDto.getEmail());
+            log.info("log-in success. user: {}", user.getEmail());
+            log.debug("log-in success. user: {}", userDto.getEmail());
 
             return user;
         } catch (UsernameNotFoundException e) {
             // 사용자를 찾을 수 없는 경우
-            logger.warn("login fail - 사용자를 찾을 수 없습니다. 이메일: {}", userDto.getEmail());
+            log.warn("login fail - 사용자를 찾을 수 없습니다. 이메일: {}", userDto.getEmail());
             throw e;
         } catch (BadCredentialsException e) {
             // 잘못된 비밀번호
-            logger.warn("로그인 실패 - 잘못된 비밀번호입니다. 이메일: {}", userDto.getEmail());
+            log.warn("로그인 실패 - 잘못된 비밀번호입니다. 이메일: {}", userDto.getEmail());
             throw e;
         } catch (Exception e) {
             // 기타 예외 처리
-            logger.error("로그인 중 에러 발생", e);
+            log.error("로그인 중 에러 발생", e);
             throw e;
         }
     }
