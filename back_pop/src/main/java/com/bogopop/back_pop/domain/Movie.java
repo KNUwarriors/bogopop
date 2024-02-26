@@ -15,27 +15,30 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String korean_title;
+    @Column(nullable = false)
+    private Long TMDB_id;
+
     @Column(nullable = false)
     private String original_title;
+
+    private String korean_title;
+
+    private String directors;
+
+    private String cast;
 
     private String release_date;
 
     private String overview;
 
+    private String genres;
+
     private int runtime;
 
-    private int adult;
-
     private String poster_path;
+
     private String backdrop_path;
 
-    @Column(nullable = false)
-    private Long TMDB_id;
-
-    private String directors;
-
-    private String cast;
     private String trailer;
 
     @Column(nullable = false)
@@ -43,5 +46,8 @@ public class Movie {
 
     @Column(nullable = false)
     private float pop_score;
+
+    private int adult;
+
 }
 
