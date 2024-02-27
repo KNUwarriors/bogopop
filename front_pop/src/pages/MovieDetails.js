@@ -1,12 +1,45 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { useParams } from 'react-router-dom';
-import './moviedetails.css'; // 스타일 파일을 불러옵니다.
+import './moviedetails.css';
+import Reviews from './Reviews';
+import SignIn from '../components/SignIn.js';
 import YouTube from 'react-youtube';
 
 function MovieDetails() {
     const { id } = useParams();
     const [movieData, setMovieData] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [ReviewPopup, setReviewPopup] = useState(false);
+    const [LoginPopup, setLoginPopup] = useState(false);
+    const navigate = useNavigate();
+
+    const checkAuthentication = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setLoggedIn(false);
+                return;
+            }
+            const response = await axios.get('/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (response.status === 200) {
+                setLoggedIn(true);
+            } else {
+                setLoggedIn(false);
+            }
+        } catch (error) {
+            console.error('Error checking authentication status:', error);
+            setLoggedIn(false); // 로그인되어 있지 않음
+        }
+    };
+    useEffect(() => {
+        checkAuthentication();
+    }, [isLoggedIn]);
 
     useEffect(() => {
         axios.get(`/movies`)
@@ -32,7 +65,19 @@ function MovieDetails() {
                 console.error('Error fetching movie data:', error);
                 setMovieData([]);
             });
-    }, []);
+
+        // 리뷰 데이터 가져오기
+        if (id) {
+            axios.get(`/reviews/${id}`)
+                .then((response) => {
+                    setReviews(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching reviews:', error);
+                    setReviews([]);
+                });
+        }
+    }, [id]);
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
@@ -42,6 +87,7 @@ function MovieDetails() {
         return <div>영화를 찾을 수 없습니다.</div>;
     }
 
+    // pop score
     const renderStars = (rating) => {
         const stars = [];
         const fullStars = Math.floor(rating);
@@ -77,12 +123,36 @@ function MovieDetails() {
         return stars;
     };
 
+    // 리뷰쓰기 버튼 클릭 시
+    const handleSubmitReview = () => {
+        if (isLoggedIn) {
+            setReviewPopup(true);
+        } else {
+            setLoginPopup(true);
+        }
+    };
+    // 리뷰쓰기 팝업 창 닫기
+    const closeModal = () => {
+        setReviewPopup(false);
+        setLoginPopup(false);
+    };
+
     return (
         <div className="movie-details-container">
             <div className="poster-section">
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
+                {/* 리뷰 쓰기 버튼 */}
+                <button onClick={handleSubmitReview}>리뷰 쓰기</button>
+                {ReviewPopup && (
+                    <Reviews isOpen={setReviewPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
+                )}
+                {LoginPopup && (
+                    <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
+                )}
             </div>
+
+
             <div className='info-container'>
                 <div className="info-section">
                     <div className='title-section'>
@@ -106,7 +176,16 @@ function MovieDetails() {
                     <p className='overview'>{movie.overview}</p>
                     <p className='directors'>감독: {movie.directors}</p>
                     <p className='cast'>출연진: {movie.cast}</p>
-
+                    <hr />
+                    {/* 리뷰 목록 */}
+                    <div className="reviews">
+                        <h3>리뷰</h3>
+                        <ul>
+                            {reviews.map((review, index) => (
+                                <li key={index}>{review}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
 
