@@ -60,6 +60,7 @@ function MovieDetails() {
                 }));
 
                 setMovieData(moviesWithImages);
+                // console.log(response.data.id);
             })
             .catch((error) => {
                 console.error('Error fetching movie data:', error);
@@ -68,8 +69,9 @@ function MovieDetails() {
 
         // 리뷰 데이터 가져오기
         if (id) {
-            axios.get(`/reviews/${id}`)
+            axios.get(`/reviews?movieId=${id}`)
                 .then((response) => {
+                    console.log(response.data);
                     setReviews(response.data);
                 })
                 .catch((error) => {
@@ -182,7 +184,9 @@ function MovieDetails() {
                         <h3>리뷰</h3>
                         <ul>
                             {reviews.map((review, index) => (
-                                <li key={index}>{review}</li>
+                                <li key={index}>
+                                    <p>{review.content}</p>
+                                </li>
                             ))}
                         </ul>
                     </div>
