@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<h1>Reviews</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Review</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="review : ${reviews}">
+        <td th:text="${review.content}"></td>
+        <!-- Add other columns as needed -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
