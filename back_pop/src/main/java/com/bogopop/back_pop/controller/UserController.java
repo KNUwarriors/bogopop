@@ -3,7 +3,6 @@ package com.bogopop.back_pop.controller;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.dto.TokenDto;
-import com.bogopop.back_pop.jwt.JwtFilter;
 import com.bogopop.back_pop.service.UserService;
 import com.bogopop.back_pop.jwt.TokenProvider;
 
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
