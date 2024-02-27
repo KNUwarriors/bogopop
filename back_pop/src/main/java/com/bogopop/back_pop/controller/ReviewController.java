@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,9 +19,10 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     @ApiOperation("영화별 리뷰 목록")
-    public String allReviewsByMovieId(@RequestParam Long movieId, Model model) {
-        List<Review> reviewList = reviewService.getAllByMovieId(movieId);
-        model.addAttribute("reviews", reviewList);
-        return "reviews";
+    @ResponseBody
+    public List<Review> allReviewsByMovieId(@RequestParam Long movieId, Model model) {
+//        List<Review> reviewList = reviewService.getAllByMovieId(movieId);
+//        model.addAttribute("reviews", reviewList);
+        return reviewService.getAllByMovieId(movieId);
     }
 }
