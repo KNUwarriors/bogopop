@@ -21,9 +21,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long user_id;
+    private Long userId;
 
-    private Long movie_id;
+    private Long movieId;
 
     @Column(nullable = false)
     @CreatedDate // Entity가 생성되어 저장될 때 시간이 자동으로 저장
