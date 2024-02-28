@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './reviews.css'
 
+// axios의 기본 설정 변경
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 const Reviews = ({ movieId, movieTitle, isLoggedIn, setLoggedIn, onClose }) => {
     const modalRef = useRef(null);
     const textareaRef = useRef(null);
-    const [rating, setRating] = useState(0);
+    const [popscore, setPopscore] = useState(0);
     const [content, setContent] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -20,7 +23,7 @@ const Reviews = ({ movieId, movieTitle, isLoggedIn, setLoggedIn, onClose }) => {
 
     // 평점 입력
     const handleRatingChange = (value) => {
-        setRating(value);
+        setPopscore(value);
     };
 
     // 리뷰 내용 입력
@@ -37,16 +40,16 @@ const Reviews = ({ movieId, movieTitle, isLoggedIn, setLoggedIn, onClose }) => {
                 console.error('토큰이 없습니다. 사용자는 로그인되어 있지 않습니다.');
                 return;
             }
-            const response = await axios.post('/reviews', {
+            console.log(popscore)
+            const response = await axios.post(`/reviews/write?movieId=${movieId}`, {
                 movieId: movieId,
-                rating: rating,
+                popScore: popscore,
                 content: content
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`    // 토큰 헤더에 포함해서 전달
                 }
             });
-
             onClose();
 
         } catch (error) {
@@ -80,7 +83,7 @@ const Reviews = ({ movieId, movieTitle, isLoggedIn, setLoggedIn, onClose }) => {
                     {[1, 2, 3, 4, 5].map(value => (
                         <div
                             key={value}
-                            className={`popcorn ${value <= rating ? 'active' : ''}`}
+                            className={`popcorn ${value <= popscore ? 'active' : ''}`}
                             // onMouseEnter={() => handleRatingChange(value)}
                             onClick={() => handleRatingChange(value)}
                         />
