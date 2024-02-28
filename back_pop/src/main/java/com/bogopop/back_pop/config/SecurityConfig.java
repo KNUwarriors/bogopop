@@ -55,7 +55,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/", "/signup", "/login","/movies", "/reviews").permitAll()
+                        .requestMatchers("/", "/signup", "/login","/movies", "/reviews", "reviews/write").permitAll()
                         .anyRequest().authenticated()
 
                 )
