@@ -35,4 +35,10 @@ public class Review {
 
     private String comments;
 
+    private String nickname;
+
+    private float popScore;
+
+    private String profile;
+
 }
