@@ -38,8 +38,6 @@ const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
             formData.append('email', email);
             formData.append('password', password);
             formData.append('nickname', nickname);
-            // formData.append('profile', profile);
-            // formData.append('background', background);
 
             const response = await axios.post('/signup', formData, {
                 headers: {
@@ -78,8 +76,6 @@ const SignIn = ({ isLoggedIn, setLoggedIn, onClose }) => {
                         <label>Email:<input type="text" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
                         <label>Password:<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></label>
                         <label>Nickname:<input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} /></label>
-                        {/* <label>Profile:<input type="text" value={profile} onChange={(e) => setProfile(e.target.value)} /></label> */}
-                        {/* <label>Background:<input type="text" value={background} onChange={(e) => setBackground(e.target.value)} /></label> */}
                         <button type="button" onClick={handleSignUp}>Sign Up</button>
                         {error && <p style={{ color: 'red' }}>{error}</p>}
                     </form>

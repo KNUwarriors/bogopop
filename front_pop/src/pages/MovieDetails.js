@@ -145,9 +145,9 @@ function MovieDetails() {
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
                 {/* 리뷰 쓰기 버튼 */}
-                <button onClick={handleSubmitReview}>리뷰 쓰기</button>
+                <button className="review_btn" onClick={handleSubmitReview}>리뷰 쓰기</button>
                 {ReviewPopup && (
-                    <Reviews isOpen={setReviewPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
+                    <Reviews movieId={movie.id} movieTitle={movie.korean_title} isOpen={setReviewPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
                 )}
                 {LoginPopup && (
                     <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
