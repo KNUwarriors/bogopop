@@ -27,7 +27,7 @@ h1 {
 
 .review-rating {
     align-items: center;
-    margin: 20px;
+    /* margin: 20px; */
 }
 
 /* 팝콘 아이콘 스타일 */
@@ -37,18 +37,22 @@ h1 {
 }
 
 .popcorn {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 40px;
     background-image: url('/public/img/corn_pop.png'); /* 팝콘 이미지 경로 */
     background-size: cover;
     display: inline-block;
-    margin-right: 5px;
+    /* margin-right: 5px; */
     cursor: pointer;
     filter: brightness(50%);
 }
 
+/* 짝수 번째 팝콘 좌우반전을 위한 CSS */
+.flip-horizontal {
+    transform: scaleX(-1); /* 좌우반전 적용 */
+}
+
 .popcorn.active {
-    /* 선택된 팝콘의 색상을 변경합니다. */
     filter: brightness(100%);
 }
 

@@ -80,11 +80,10 @@ const Reviews = ({ movieId, movieTitle, isLoggedIn, setLoggedIn, onClose }) => {
             <div className="review-content">
                 <h1>{movieTitle}</h1>
                 <div className='review-rating'>
-                    {[1, 2, 3, 4, 5].map(value => (
+                    {[0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((value, index) => (
                         <div
                             key={value}
-                            className={`popcorn ${value <= popscore ? 'active' : ''}`}
-                            // onMouseEnter={() => handleRatingChange(value)}
+                            className={`popcorn ${value <= popscore ? 'active' : ''} ${index % 2 === 1 ? 'flip-horizontal' : ''}`}
                             onClick={() => handleRatingChange(value)}
                         />
                     ))}
