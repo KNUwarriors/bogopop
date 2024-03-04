@@ -19,7 +19,6 @@
     color: white;
     padding: 10px;
     width: 90%;
-    /* max-width: 400px; */
 }
 
 h1 {
@@ -27,11 +26,8 @@ h1 {
 }
 
 .review-rating {
+    align-items: center;
     margin: 20px;
-}
-
-.review-rating label {
-    margin-right: 10px;
 }
 
 /* 팝콘 아이콘 스타일 */
@@ -41,23 +37,24 @@ h1 {
 }
 
 .popcorn {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     background-image: url('/public/img/corn_pop.png'); /* 팝콘 이미지 경로 */
     background-size: cover;
     display: inline-block;
     margin-right: 5px;
     cursor: pointer;
+    filter: brightness(50%);
 }
 
 .popcorn.active {
     /* 선택된 팝콘의 색상을 변경합니다. */
-    filter: brightness(70%);
+    filter: brightness(100%);
 }
 
 /* 팝콘 아이콘들을 감싸는 div에 마우스 호버 시 자식 팝콘들의 색상을 변경합니다. */
 .popcorn-rating:hover .popcorn {
-    filter: brightness(70%);
+    filter: brightness(50%);
 }
 
 /* 특정 팝콘 아이콘을 호버했을 때, 그 팝콘을 포함한 모든 왼쪽의 팝콘 아이콘들의 색상을 변경합니다. */

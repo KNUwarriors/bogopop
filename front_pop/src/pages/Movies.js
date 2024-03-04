@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import axios from 'axios'
 import { Link } from 'react-router-dom';
 import './movies.css';
 
@@ -44,13 +45,15 @@ const MovieContainer = ({ title, movieData }) => {
                 <button className="scrollButton left" onClick={() => scroll('left')}>&lt;</button>
             )}
             <div className='movies' ref={containerRef}>
-                {movieData.map((movie) => (
-                    <Link key={movie.id} to={`/movies/${movie.id}`}>
-                        <div className="movie-poster">
-                            <img src={movie.poster} alt={movie.title} />
-                        </div>
-                    </Link>
-                ))}
+                {movieData.map((movie) => {
+                    return (
+                        <Link key={movie.id} to={`/movies/${movie.id}`}>
+                            <div className="moviePoster">
+                                <img src={movie.poster_path} alt={movie.korean_title} />
+                            </div>
+                        </Link>
+                    );
+                })}
             </div>
             {isRightButtonVisible && (
                 <button className="scrollButton right" onClick={() => scroll('right')}>&gt;</button>
@@ -60,29 +63,39 @@ const MovieContainer = ({ title, movieData }) => {
 };
 
 function Movies() {
-    const movieData = [
-        { id: 1, title: '위시', poster: '/img/poster_1.jpg', rating: 4.9 },
-        { id: 2, title: '로키', poster: '/img/poster_2.jpg', rating: 4.5 },
-        { id: 3, title: '오펜하이머', poster: '/img/poster_3.jpg', rating: 4.3 },
-        { id: 4, title: '아메리칸 셰프', poster: '/img/poster_4.jpg', rating: 4.1 },
-        { id: 5, title: '짱구', poster: '/img/poster_5.jpg', rating: 3.7 },
-        { id: 6, title: '콜바넴', poster: '/img/poster_6.jpg', rating: 3.4 },
-        { id: 7, title: '작은 아씨들', poster: '/img/poster_7.jpg', rating: 2.6 },
-    ];
+    const [movieData, setMovieData] = useState([]);
 
-    const movieContainers = [
-        { title: '최근 개봉한 영화', movieData: movieData },
-        { title: '인기 영화', movieData: movieData },
-        { title: '로맨스 영화', movieData: movieData },
-        { title: '호러 영화', movieData: movieData },
-        // 다른 컨테이너들을 필요한 만큼 추가
-    ];
+    useEffect(() => {
+        axios.get('/movies')
+            .then((response) => {
+                const moviesWithImages = response.data.map(movie => ({
+                    id: movie.id,
+                    korean_title: movie.korean_title,
+                    poster_path: movie.poster_path,
+                    pop_score: movie.pop_score,
+                    release_date: movie.release_date,
+                    genres: movie.genres
+                }));
+
+                setMovieData(moviesWithImages);
+            })
+            .catch((error) => {
+                console.error('Error fetching movie data:', error);
+                setMovieData([]);
+            });
+    }, []);
+
+    const RomanceMovies = movieData.filter(movie => movie.genres && movie.genres.includes(10749));
+    const ActionMovies = movieData.filter(movie => movie.genres && movie.genres.includes(28));
+    const CrimeMovies = movieData.filter(movie => movie.genres && movie.genres.includes(80));
 
     return (
         <div>
-            {movieContainers.map((container, index) => (
-                <MovieContainer key={index} title={container.title} movieData={container.movieData} />
-            ))}
+            <MovieContainer title='최근 개봉한 영화' movieData={movieData} />
+            <MovieContainer title='로맨스 영화' movieData={RomanceMovies} />
+            <MovieContainer title='액션 영화' movieData={ActionMovies} />
+            <MovieContainer title='범죄 영화' movieData={CrimeMovies} />
+
         </div>
     );
 }
