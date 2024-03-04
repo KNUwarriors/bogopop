@@ -49,10 +49,15 @@ public class Movie {
 
     private boolean adult;
 
+
     // 좋아요 수 변경 메서드
     public void likeChange(long newLikes) {
         this.likes = newLikes;
     }
+
+    @Column(nullable = false)
+    private float review_count;
+
 
 }
 

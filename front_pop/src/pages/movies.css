@@ -13,9 +13,8 @@
 }
 
 .movie-container hr {
-    height: 1px;
-    border: 0;
-    background: white;
+    border: none;
+    border-top: 2px solid rgba(204, 204, 204, 0.5);
 }
 
 .movies {

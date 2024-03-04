@@ -13,7 +13,7 @@ function MovieDetails() {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [ReviewPopup, setReviewPopup] = useState(false);
     const [LoginPopup, setLoginPopup] = useState(false);
-    const navigate = useNavigate();
+    const [likedReviews, setLikedReviews] = useState([]); // 좋아요한 리뷰 목록
 
     const checkAuthentication = async () => {
         try {
@@ -139,6 +139,20 @@ function MovieDetails() {
         setLoginPopup(false);
     };
 
+    // 좋아요 토글 함수
+    const toggleLike = (index) => {
+        // 좋아요한 리뷰 목록에서 해당 index의 값이 있는지 확인
+        const idx = likedReviews.indexOf(index);
+        if (idx === -1) {
+            // 없다면 추가
+            setLikedReviews([...likedReviews, index]);
+        } else {
+            // 있다면 삭제
+            const updatedLikedReviews = likedReviews.filter((item) => item !== index);
+            setLikedReviews(updatedLikedReviews);
+        }
+    };
+
     return (
         <div className="movie-details-container">
             <div className="poster-section">
@@ -182,13 +196,26 @@ function MovieDetails() {
                     {/* 리뷰 목록 */}
                     <div className="reviews">
                         <h3>리뷰</h3>
-                        <ul>
-                            {reviews.map((review, index) => (
-                                <li key={index}>
-                                    <p>{review.content}</p>
-                                </li>
-                            ))}
-                        </ul>
+                        {reviews.map((review, index) => (
+                            <div className='review_list' key={index}>
+                                <div className='reivew_up'>
+                                    <img src={review.profile} alt='userimage' className='review_profile' />
+                                    <p className='review_nickname'>{review.nickname}</p>
+                                    <p className='review_popScore'>{review.popScore}</p>
+                                    <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
+                                    {/* 좋아요 버튼 */}
+                                    <img
+                                        src={likedReviews.includes(index) ? '/img/heart_full.png' : '/img/heart_empty.png'}
+                                        alt='reivew_likes'
+                                        className='review_likes'
+                                        onClick={() => toggleLike(index)}
+                                    />
+                                    {/* <img src='/img/heart_empty.png' alt='reivew_likes' className='review_likes' /> */}
+                                </div>
+                                <hr className='review_hr' />
+                                <p className='review_content'>{review.content}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

@@ -29,28 +29,22 @@
 
 .star {
     width: 40px;
-    /* 별 크기 조절 */
     height: 40px;
-    /* 별 크기 조절 */
     margin-right: 2px;
-    /* 별 사이 간격 조절 */
 }
 
 .yellow-star {
     background-image: url('/public/img/corn_pop.png');
-    /* 노란색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .grey-star {
     background-image: url('/public/img/corn_half.png');
-    /* 회색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .black-star {
     background-image: url('/public/img/corn_unpop.png');
-    /* 까만 별 이미지 경로 지정 */
     background-size: cover;
 }
 
@@ -114,4 +108,76 @@
 .cast {
     color: white;
     font-size: 20px;
+}
+
+.reviews {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.review_list {
+    width: 95%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.review_up {
+    width: 100%;
+}
+
+.review_profile {
+    display: inline;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.review_nickname {
+    display: inline;
+    vertical-align: 50%;
+    margin-right: 30px;
+    font-size: 20px;
+}
+
+.review_popScore {
+    display: inline;
+    vertical-align: 50%;
+}
+
+.review_popCorn {
+    width: 20px;
+    height: 20px;
+    margin-bottom: -1%;
+    display: inline;
+    vertical-align: 50%;
+}
+
+.review_likes {
+    width: 20px;
+    height: 20px;
+    margin-bottom: -1%;
+    display: inline-block;
+    filter: invert(100%);
+    float: right;
+    margin-top: 10px;
+}
+
+hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.review_hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.review_content {
+    margin: 1px;
 }
