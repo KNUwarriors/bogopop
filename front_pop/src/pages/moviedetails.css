@@ -24,7 +24,7 @@
     align-items: center;
     font-size: 17px;
     font-weight: lighter;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .star {
@@ -54,6 +54,14 @@
     background-size: cover;
 }
 
+.review_btn {
+    width: 250px;
+    margin-top: 20px;
+    background: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 20px;
+}
 
 .info-container {
     flex: 2;
