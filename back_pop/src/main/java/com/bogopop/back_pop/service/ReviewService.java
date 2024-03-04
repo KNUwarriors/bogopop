@@ -34,7 +34,6 @@ public class ReviewService {
                         .movieId(movieId)
                         .likes(0L)
                         .nickname(user.getNickname())
-                        .popScore(0)
                         .profile(user.getProfile())
                         .build()
         );
