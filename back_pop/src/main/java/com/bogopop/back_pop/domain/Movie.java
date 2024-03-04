@@ -49,5 +49,8 @@ public class Movie {
 
     private boolean adult;
 
+    @Column(nullable = false)
+    private float review_count;
+
 }
 
