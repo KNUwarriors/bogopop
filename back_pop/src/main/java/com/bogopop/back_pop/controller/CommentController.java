@@ -23,12 +23,12 @@ public class CommentController {
     @GetMapping("/reviews/{reviewId}/comments")
     @ApiOperation("리뷰별 댓글 목록")
     @ResponseBody
-    public List<Comment> allReviewsByMovieId(@PathVariable("reviewId") Long reviewId) {
+    public List<Comment> allCommentsByReviewId(@PathVariable("reviewId") Long reviewId) {
         return commentService.getAllByReviewId(reviewId);
     }
 
     @PostMapping("/reviews/{reviewId}/comments")
-    public ResponseEntity<CommentDto> writeReview(@PathVariable("reviewId") Long reviewId, @RequestBody CommentDto commentDto, Authentication authentication) {
+    public ResponseEntity<CommentDto> writeComment(@PathVariable("reviewId") Long reviewId, @RequestBody CommentDto commentDto, Authentication authentication) {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 현재 로그인된 사용자의 이메일을 가져옴
 
