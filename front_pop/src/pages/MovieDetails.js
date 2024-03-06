@@ -14,6 +14,7 @@ function MovieDetails() {
     const [ReviewPopup, setReviewPopup] = useState(false);
     const [LoginPopup, setLoginPopup] = useState(false);
     const [likedReviews, setLikedReviews] = useState([]); // 좋아요한 리뷰 목록
+    const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
 
     const checkAuthentication = async () => {
         try {
@@ -37,6 +38,45 @@ function MovieDetails() {
             setLoggedIn(false); // 로그인되어 있지 않음
         }
     };
+
+    const checkLikeStatus = async () => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            const response = await axios.get(`/movies/checkLike?movieId=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            setIsLiked(response.data); // 좋아요 상태 업데이트
+            console.log(response.data)
+        } catch (error) {
+            console.error('좋아요 상태 확인 중 오류 발생:', error);
+        }
+    };
+
+    const handleLikeToggle = async () => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            if (!isLiked) {
+                await axios.post(`/movies/addLike?movieId=${id}`, null, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                    }
+                });
+            } else {
+                await axios.delete(`/movies/deleteLike?movieId=${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                    }
+                });
+            }
+            // 상태 업데이트
+            setIsLiked(!isLiked);
+        } catch (error) {
+            console.error('Error toggling like status:', error);
+        }
+    };
+
     useEffect(() => {
         checkAuthentication();
     }, [isLoggedIn]);
@@ -78,6 +118,7 @@ function MovieDetails() {
                     console.error('Error fetching reviews:', error);
                     setReviews([]);
                 });
+            checkLikeStatus();
         }
     }, [id]);
 
@@ -139,24 +180,16 @@ function MovieDetails() {
         setLoginPopup(false);
     };
 
-    // 좋아요 토글 함수
-    const toggleLike = (index) => {
-        // 좋아요한 리뷰 목록에서 해당 index의 값이 있는지 확인
-        const idx = likedReviews.indexOf(index);
-        if (idx === -1) {
-            // 없다면 추가
-            setLikedReviews([...likedReviews, index]);
-        } else {
-            // 있다면 삭제
-            const updatedLikedReviews = likedReviews.filter((item) => item !== index);
-            setLikedReviews(updatedLikedReviews);
-        }
-    };
-
     return (
         <div className="movie-details-container">
             <div className="poster-section">
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
+                {/* 좋아요 버튼 */}
+                <img
+                    src={isLiked ? '/img/heart_full.png' : '/img/heart_empty.png'}
+                    className='movie_likes'
+                    onClick={handleLikeToggle}
+                />
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
                 {/* 리뷰 쓰기 버튼 */}
                 <button className="review_btn" onClick={handleSubmitReview}>리뷰 쓰기</button>
@@ -204,12 +237,12 @@ function MovieDetails() {
                                     <p className='review_popScore'>{review.popScore}</p>
                                     <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
                                     {/* 좋아요 버튼 */}
-                                    <img
+                                    {/* <img
                                         src={likedReviews.includes(index) ? '/img/heart_full.png' : '/img/heart_empty.png'}
                                         alt='reivew_likes'
                                         className='review_likes'
                                         onClick={() => toggleLike(index)}
-                                    />
+                                    /> */}
                                     {/* <img src='/img/heart_empty.png' alt='reivew_likes' className='review_likes' /> */}
                                 </div>
                                 <hr className='review_hr' />
