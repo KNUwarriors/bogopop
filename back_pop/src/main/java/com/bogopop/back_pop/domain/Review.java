@@ -41,4 +41,8 @@ public class Review {
 
     private String profile;
 
+    public void likeChange(long newLikes) {
+        this.likes = newLikes;
+    }
+
 }

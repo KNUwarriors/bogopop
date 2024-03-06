@@ -40,6 +40,7 @@ public class ReviewController {
         }
         reviewService.save(reviewDto, user, movieId);
 
+        //true or false
         return ResponseEntity.ok(reviewDto);
     }
 }
