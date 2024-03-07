@@ -15,6 +15,7 @@ function MovieDetails() {
     const [LoginPopup, setLoginPopup] = useState(false);
     const [likedReviews, setLikedReviews] = useState([]); // 좋아요한 리뷰 목록
     const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
+    const [comments, setComments] = useState([]);
 
     const checkAuthentication = async () => {
         try {
@@ -77,6 +78,16 @@ function MovieDetails() {
         }
     };
 
+    const fetchComments = async (reviewId) => {
+        try {
+            const response = await axios.get(`/reviews/${reviewId}/comments`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            return [];
+        }
+    };
+
     useEffect(() => {
         checkAuthentication();
     }, [isLoggedIn]);
@@ -100,7 +111,6 @@ function MovieDetails() {
                 }));
 
                 setMovieData(moviesWithImages);
-                // console.log(response.data.id);
             })
             .catch((error) => {
                 console.error('Error fetching movie data:', error);
@@ -121,6 +131,23 @@ function MovieDetails() {
             checkLikeStatus();
         }
     }, [id]);
+
+    useEffect(() => {
+        // 리뷰 ID별로 댓글 가져오기
+        reviews.forEach(review => {
+            axios.get(`/reviews/${review.id}/comments`)
+                .then((response) => {
+                    // 각 리뷰에 대한 댓글을 가져와서 저장
+                    setComments(prevComments => ({
+                        ...prevComments,
+                        [review.id]: response.data
+                    }));
+                })
+                .catch((error) => {
+                    console.error(`Error fetching comments for review ${review.id}:`, error);
+                });
+        });
+    }, [reviews]);
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
@@ -179,7 +206,17 @@ function MovieDetails() {
         setReviewPopup(false);
         setLoginPopup(false);
     };
-
+    // 댓글 토글 함수
+    const handleCommentToggle = async (index) => {
+        const updatedReviews = [...reviews];
+        updatedReviews[index].isCommentOpen = !updatedReviews[index].isCommentOpen;
+        setReviews(updatedReviews);
+        if (updatedReviews[index].isCommentOpen) {
+            const reviewId = updatedReviews[index].id;
+            const fetchedComments = await fetchComments(reviewId);
+            setComments(fetchedComments);
+        }
+    };
     return (
         <div className="movie-details-container">
             <div className="poster-section">
@@ -200,7 +237,6 @@ function MovieDetails() {
                     <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
                 )}
             </div>
-
 
             <div className='info-container'>
                 <div className="info-section">
@@ -236,16 +272,35 @@ function MovieDetails() {
                                     <p className='review_nickname'>{review.nickname}</p>
                                     <p className='review_popScore'>{review.popScore}</p>
                                     <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
+
+                                    {/* 댓글 버튼 */}
+                                    <img src='/img/comment.png' alt='review_comment_btn' className='review_comment_btn'
+                                        onClick={() => handleCommentToggle(index)} />
+
                                     {/* 좋아요 버튼 */}
-                                    {/* <img
+                                    <img
                                         src={likedReviews.includes(index) ? '/img/heart_full.png' : '/img/heart_empty.png'}
                                         alt='reivew_likes'
                                         className='review_likes'
-                                        onClick={() => toggleLike(index)}
-                                    /> */}
+                                    // onClick={() => toggleLike(index)}
+                                    />
                                     {/* <img src='/img/heart_empty.png' alt='reivew_likes' className='review_likes' /> */}
+
                                 </div>
-                                <hr className='review_hr' />
+                                {review.isCommentOpen && (
+                                    <>
+                                        <hr className='review_hr' />
+                                        {/* 댓글 목록 */}
+                                        <div className='comment_section'>
+                                            {comments.map((comment, commentIndex) => (
+                                                <div className='comment_item' key={commentIndex}>
+                                                    <p>{comment.content}</p>
+                                                    {/* 추가적인 댓글 정보 표시 */}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
                                 <p className='review_content'>{review.content}</p>
                             </div>
                         ))}
