@@ -20,7 +20,7 @@ public class CommentController {
     public final CommentService commentService;
     public final UserService userService;
 
-    @GetMapping("/reviews/{reviewId}/comments")
+/*    @GetMapping("/reviews/{reviewId}/comments")
     @ApiOperation("리뷰별 댓글 목록")
     @ResponseBody
     public List<Comment> allCommentsByReviewId(@PathVariable("reviewId") Long reviewId) {
@@ -29,6 +29,28 @@ public class CommentController {
 
     @PostMapping("/reviews/{reviewId}/comments")
     public ResponseEntity<CommentDto> writeComment(@PathVariable("reviewId") Long reviewId, @RequestBody CommentDto commentDto, Authentication authentication) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // 현재 로그인된 사용자의 이메일을 가져옴
+
+        User user = userService.getUserByEmail(userEmail);
+        if (user == null) {
+            // 사용자를 찾을 수 없는 경우 404 에러를 반환합니다.
+            return ResponseEntity.notFound().build();
+        }
+        commentService.save(commentDto, user, reviewId);
+
+        return ResponseEntity.ok(commentDto);
+    }*/
+
+    @GetMapping("/comments")
+    @ApiOperation("리뷰별 댓글 목록")
+    @ResponseBody
+    public List<Comment> allCommentsByReviewId(@RequestParam Long reviewId) {
+        return commentService.getAllByReviewId(reviewId);
+    }
+
+    @PostMapping("/comments/write")
+    public ResponseEntity<CommentDto> writeComment(@RequestParam Long reviewId, @RequestBody CommentDto commentDto, Authentication authentication) {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 현재 로그인된 사용자의 이메일을 가져옴
 
