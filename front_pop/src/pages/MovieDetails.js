@@ -16,6 +16,7 @@ function MovieDetails() {
     const [likedReviews, setLikedReviews] = useState([]); // 좋아요한 리뷰 목록
     const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
     const [comments, setComments] = useState([]);
+    const [commentInputs, setCommentInputs] = useState(Array(reviews.length).fill(false));
 
     const checkAuthentication = async () => {
         try {
@@ -78,16 +79,6 @@ function MovieDetails() {
         }
     };
 
-    const fetchComments = async (reviewId) => {
-        try {
-            const response = await axios.get(`/reviews/${reviewId}/comments`);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching comments:', error);
-            return [];
-        }
-    };
-
     useEffect(() => {
         checkAuthentication();
     }, [isLoggedIn]);
@@ -117,12 +108,39 @@ function MovieDetails() {
                 setMovieData([]);
             });
 
-        // 리뷰 데이터 가져오기
         if (id) {
             axios.get(`/reviews?movieId=${id}`)
-                .then((response) => {
+                .then(async (response) => {
                     console.log(response.data);
-                    setReviews(response.data);
+                    const reviewsData = response.data;
+
+                    // 리뷰 id 배열 생성
+                    const reviewIds = reviewsData.map(review => review.id);
+
+                    // 각 리뷰 id에 대한 댓글 가져오기
+                    const commentRequests = reviewIds.map(reviewId =>
+                        axios.get(`/comments?reviewId=${reviewId}`)
+                    );
+
+                    // 모든 댓글 요청을 병렬로 실행하고 기다림
+                    const commentsData = await Promise.all(commentRequests);
+
+                    // 리뷰와 댓글을 합치기 및 리뷰 ID 저장
+                    const mergedReviews = reviewsData.map((review, index) => {
+                        // 리뷰의 댓글 목록과 각 댓글의 id를 함께 저장
+                        const commentsWithIds = commentsData[index].data.map(comment => ({
+                            ...comment,
+                            id: comment.id // 댓글의 id 저장
+                        }));
+                        return {
+                            ...review,
+                            comments: commentsWithIds, // 해당 리뷰의 댓글 목록 추가
+                            reviewId: review.id // 수정된 부분: 리뷰 ID 저장
+                        };
+                    });
+
+                    setReviews(mergedReviews);
+
                 })
                 .catch((error) => {
                     console.error('Error fetching reviews:', error);
@@ -130,24 +148,9 @@ function MovieDetails() {
                 });
             checkLikeStatus();
         }
+
     }, [id]);
 
-    useEffect(() => {
-        // 리뷰 ID별로 댓글 가져오기
-        reviews.forEach(review => {
-            axios.get(`/reviews/${review.id}/comments`)
-                .then((response) => {
-                    // 각 리뷰에 대한 댓글을 가져와서 저장
-                    setComments(prevComments => ({
-                        ...prevComments,
-                        [review.id]: response.data
-                    }));
-                })
-                .catch((error) => {
-                    console.error(`Error fetching comments for review ${review.id}:`, error);
-                });
-        });
-    }, [reviews]);
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
@@ -206,17 +209,67 @@ function MovieDetails() {
         setReviewPopup(false);
         setLoginPopup(false);
     };
-    // 댓글 토글 함수
-    const handleCommentToggle = async (index) => {
-        const updatedReviews = [...reviews];
-        updatedReviews[index].isCommentOpen = !updatedReviews[index].isCommentOpen;
-        setReviews(updatedReviews);
-        if (updatedReviews[index].isCommentOpen) {
-            const reviewId = updatedReviews[index].id;
-            const fetchedComments = await fetchComments(reviewId);
-            setComments(fetchedComments);
+    // 댓글 열기
+    const handleCommentToggle = (index) => {
+        setReviews(prevReviews => prevReviews.map((review, idx) => {
+            if (idx === index) {
+                return { ...review, showComments: !review.showComments };
+            }
+            return review;
+        }));
+    };
+
+
+    const handleCommentWriteToggle = (index) => {
+        setCommentInputs(prevInputs => {
+            const updatedInputs = [...prevInputs];
+            updatedInputs[index] = !updatedInputs[index];
+            return updatedInputs;
+        });
+    };
+
+
+
+    // 댓글 제출
+    const handleSubmitComment = async (reviewId, index) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            const response = await axios.post(`/comments/write?reviewId=${reviewId}`, {
+                content: comments[index]
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            // 댓글 목록 업데이트
+            setReviews(prevReviews => prevReviews.map((review, idx) => {
+                if (idx === index) {
+                    return { ...review, comments: [...review.comments, response.data] };
+                }
+                return review;
+            }));
+            // 댓글 입력란 초기화
+            setComments(prevComments => {
+                const updatedComments = [...prevComments];
+                updatedComments[index] = '';
+                return updatedComments;
+            });
+        } catch (error) {
+            console.error('Error submitting comment:', error);
         }
     };
+
+    // 댓글 입력 값 변경
+    const handleCommentChange = (e, index) => {
+        const { value } = e.target;
+        setComments(prevComments => {
+            const updatedComments = [...prevComments];
+            updatedComments[index] = value;
+            return updatedComments;
+        });
+    };
+
+
     return (
         <div className="movie-details-container">
             <div className="poster-section">
@@ -272,11 +325,13 @@ function MovieDetails() {
                                     <p className='review_nickname'>{review.nickname}</p>
                                     <p className='review_popScore'>{review.popScore}</p>
                                     <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
-
-                                    {/* 댓글 버튼 */}
-                                    <img src='/img/comment.png' alt='review_comment_btn' className='review_comment_btn'
-                                        onClick={() => handleCommentToggle(index)} />
-
+                                    {/* 댓글 쓰기 버튼 */}
+                                    <img
+                                        src='/img/comment.png'
+                                        alt='write_comment'
+                                        className='write_comment'
+                                        onClick={() => handleCommentWriteToggle(index)}
+                                    />
                                     {/* 좋아요 버튼 */}
                                     <img
                                         src={likedReviews.includes(index) ? '/img/heart_full.png' : '/img/heart_empty.png'}
@@ -287,21 +342,36 @@ function MovieDetails() {
                                     {/* <img src='/img/heart_empty.png' alt='reivew_likes' className='review_likes' /> */}
 
                                 </div>
-                                {review.isCommentOpen && (
-                                    <>
-                                        <hr className='review_hr' />
-                                        {/* 댓글 목록 */}
-                                        <div className='comment_section'>
-                                            {comments.map((comment, commentIndex) => (
-                                                <div className='comment_item' key={commentIndex}>
-                                                    <p>{comment.content}</p>
-                                                    {/* 추가적인 댓글 정보 표시 */}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
                                 <p className='review_content'>{review.content}</p>
+                                <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
+                                {/* 댓글 목록 */}
+                                {review.comments && review.showComments && (
+                                    <div className="comment-list">
+                                        {review.comments.map((comment, commentIndex) => (
+                                            <div key={commentIndex} className="comment">
+                                                <p>{comment.content}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {/* 댓글 입력란 */}
+                                {isLoggedIn && commentInputs[index] && (
+                                    <div className="comment-input">
+                                        <input
+                                            type="text"
+                                            placeholder="댓글을 입력하세요..."
+                                            value={comments[index] || ''}
+                                            onChange={(e) => handleCommentChange(e, index)}
+                                        />
+                                        <button onClick={() => handleSubmitComment(review.reviewId, index)}>등록</button>
+                                    </div>
+                                )}
+                                {!isLoggedIn && commentInputs[index] && (
+                                    <div>
+                                        <p>댓글을 작성하려면 로그인하세요.</p>
+                                    </div>
+                                )}
+
                             </div>
                         ))}
                     </div>
