@@ -1,11 +1,13 @@
 package com.bogopop.back_pop.controller;
 
+import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.MovieLike;
 import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.dto.TokenDto;
 import com.bogopop.back_pop.service.LikeService;
+import com.bogopop.back_pop.service.MovieService;
 import com.bogopop.back_pop.service.ReviewService;
 import com.bogopop.back_pop.service.UserService;
 import com.bogopop.back_pop.jwt.TokenProvider;
@@ -23,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +35,7 @@ public class UserController {
     private final UserService userService;
     private final LikeService likeService;
     private final ReviewService reviewService;
+    private final MovieService movieService;
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -95,7 +99,12 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        List<MovieLike> movieLikes = likeService.getAllMovieLikeByUserId(user.getId());
+        List<MovieLike> likes = likeService.getAllMovieLikeByUserId(user.getId());
+        List<Movie> movieLikes = new LinkedList<>();
+        for (MovieLike like : likes){
+            movieLikes.add(movieService.getMovieByMovieId(like.getMovieId()));
+        }
+
         List<Review> reviews = reviewService.getAllByUserId(user.getId());
 
         Map<String, Object> userData = new HashMap<>();
