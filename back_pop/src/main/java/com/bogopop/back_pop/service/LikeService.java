@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -94,6 +96,10 @@ public class LikeService {
 
     public Boolean checkReviewLike(Long userId, Long reviewId) {
         return reviewLikeRepository.existsByUserIdAndReviewId(userId, reviewId);
+    }
+
+    public List<MovieLike> getAllMovieLikeByUserId(Long userId){
+        return movieLikeRepository.findAllByUserId(userId);
     }
 
 }
