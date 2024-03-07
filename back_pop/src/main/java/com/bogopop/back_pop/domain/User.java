@@ -35,11 +35,6 @@ public class User {
     @Column(nullable = false)
     private String background;
 
-    private String liked_movies;
-    private String liked_lists;
-    private String my_lists;
-    private String my_reviews;
-
     @Column(nullable = false, columnDefinition = "ENUM('USER', 'ADMIN') DEFAULT 'USER'")
     private String role;
 
