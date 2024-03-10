@@ -99,5 +99,5 @@ Front
 [구윤희] (링크)
 
 Back
-[차정원] (https://github.com/)https://github.com/scrsrg)
+[차정원](https://github.com/)https://github.com/scrsrg)
 [박세현]
