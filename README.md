@@ -61,29 +61,27 @@
 </details>
 
 <details>
-  <summary> 리뷰작성 </summary>
+  <summary> 리뷰 작성 기능 </summary>
     <img width="1045" alt="Untitled6" src="https://github.com/KNUwarriors/bogopop/assets/98182362/d2fe49f7-8163-4105-aa65-1bbdd819d558">
-    
     <div>
-    <ul>
-      <li>영화 상세 페이지에서 영화 포스터 하단의 '리뷰쓰기' 버튼을 클릭 시 팝업창 출력</li>
-      <li>팝업창의 팝콘 이미지를 클릭하여 0.5단위의 팝콘점수 등록 가능</li>
-      <li>영화 리뷰 작성 박스의 크는 사용자가 작성하는 리뷰의 길이만큼 동적으로 증가한다. </li>
-      <li>작성된 리뷰의 오른쪽 하트 버튼을 통하여 리뷰에 좋아요 가능 </li>
-    </ul>
-  </div>
+      <ul>
+        <li>영화 상세 페이지에서 영화 포스터 하단의 '리뷰쓰기' 버튼을 클릭 시 팝업창 출력</li>
+        <li>팝업창의 팝콘 이미지를 클릭하여 0.5단위의 팝콘점수 등록 가능</li>
+        <li>영화 리뷰 작성 박스의 크는 사용자가 작성하는 리뷰의 길이만큼 동적으로 증가한다. </li>
+        <li>작성된 리뷰의 오른쪽 하트 버튼을 통하여 리뷰에 좋아요 가능 </li>
+      </ul>
+    </div>
 </details>
 
 <details>
   <summary> 리뷰 댓글 가능 </summary>  
     <img width="988" alt="Untitled7" src="https://github.com/KNUwarriors/bogopop/assets/98182362/62c89627-dfdf-4c1a-89e6-d0a047811c19">
     <div>
-    <ul>
-      <li>리뷰 우측의 메세지이모티콘 클릭 시, 해당 리뷰에 댓글을 달 수 있다</li>
-      <li>리뷰의 댓글은 '댓글보기' 버튼을 통하여 확인 할 수 있다. (토글형식)</li>
-    
-    </ul>
-  </div>
+      <ul>
+        <li>리뷰 우측의 메세지이모티콘 클릭 시, 해당 리뷰에 댓글을 달 수 있다</li>
+        <li>리뷰의 댓글은 '댓글보기' 버튼을 통하여 확인 할 수 있다. (토글형식)</li>
+      </ul>
+    </div>
 </details>
 
 ### 3. DB 
