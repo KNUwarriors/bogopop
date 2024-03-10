@@ -95,10 +95,11 @@
 
 About Team Bogopop
 -------------------------
-Front
-구윤희링크
+<div>
+    <ul>
+      <li>Front-end</li>
+      
+      <li>Back-end</li>
+      <a href="https://github.com/scysrg">차정원</a>
+    </ul>
 
-Back
-[차정원](https://github.com/)https://github.com/scrsrg)
-
-박세현
