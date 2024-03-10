@@ -99,6 +99,6 @@ About Team Bogopop
     <ul>
       <li>Front-end</li>
       <li>Back-end</li>
-      <a href="https://github.com/scysrg">차정원</a>
+      <p>👩‍💻</p><a href="https://github.com/scysrg">차정원</a>
     </ul>
 </div>
