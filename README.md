@@ -97,7 +97,7 @@ About Team Bogopop
 <div>
     <ul>
       <li>Front-end</li>
-      <p>👩‍💻구윤희</p>
+      <p><a href="https://github.com/yunhee999">👩‍💻구윤희</a></p>
       <li>Back-end</li>
       <p>👩‍💻<a href="https://github.com/scysrg">차정원</a></p>
        <p>👩‍💻박세현</p>
