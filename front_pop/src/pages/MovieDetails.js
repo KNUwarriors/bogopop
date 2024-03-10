@@ -13,8 +13,9 @@ function MovieDetails() {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [ReviewPopup, setReviewPopup] = useState(false);
     const [LoginPopup, setLoginPopup] = useState(false);
-    const [likedReviews, setLikedReviews] = useState([]); // 좋아요한 리뷰 목록
     const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
+    const [comments, setComments] = useState([]);
+    const [commentInputs, setCommentInputs] = useState(Array(reviews.length).fill(false));
 
     const checkAuthentication = async () => {
         try {
@@ -38,7 +39,7 @@ function MovieDetails() {
             setLoggedIn(false); // 로그인되어 있지 않음
         }
     };
-
+    // 영화 좋아요 조회
     const checkLikeStatus = async () => {
         try {
             const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
@@ -48,12 +49,12 @@ function MovieDetails() {
                 }
             });
             setIsLiked(response.data); // 좋아요 상태 업데이트
-            console.log(response.data)
+            // console.log(response.data)
         } catch (error) {
             console.error('좋아요 상태 확인 중 오류 발생:', error);
         }
     };
-
+    // 영화 좋아요 버튼
     const handleLikeToggle = async () => {
         try {
             const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
@@ -74,6 +75,23 @@ function MovieDetails() {
             setIsLiked(!isLiked);
         } catch (error) {
             console.error('Error toggling like status:', error);
+        }
+    };
+
+    // 리뷰 좋아요 상태 확인
+    const checkReviewLike = async (reviewId) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            const response = await axios.get(`/reviews/checkLike?reviewId=${reviewId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            console.log(response.data)
+            return response.data; // 좋아요 상태 반환
+        } catch (error) {
+            console.error('Error checking review like status:', error);
+            return false;
         }
     };
 
@@ -100,36 +118,62 @@ function MovieDetails() {
                 }));
 
                 setMovieData(moviesWithImages);
-                // console.log(response.data.id);
             })
             .catch((error) => {
                 console.error('Error fetching movie data:', error);
                 setMovieData([]);
             });
 
-        // 리뷰 데이터 가져오기
         if (id) {
             axios.get(`/reviews?movieId=${id}`)
-                .then((response) => {
+                .then(async (response) => {
                     console.log(response.data);
-                    setReviews(response.data);
+                    const reviewsData = response.data;
+
+                    // 리뷰 id 배열 생성
+                    const reviewIds = reviewsData.map(review => review.id);
+
+                    // 각 리뷰 id에 대한 댓글 가져오기
+                    const commentRequests = reviewIds.map(reviewId =>
+                        axios.get(`/comments?reviewId=${reviewId}`)
+                    );
+
+                    // 모든 댓글 요청을 병렬로 실행하고 기다림
+                    const commentsData = await Promise.all(commentRequests);
+
+                    // 리뷰와 댓글을 합치기 및 리뷰 ID 저장
+                    const mergedReviews = reviewsData.map((review, index) => {
+                        // 리뷰의 댓글 목록과 각 댓글의 id를 함께 저장
+                        const commentsWithIds = commentsData[index].data.map(comment => ({
+                            ...comment,
+                            id: comment.id // 댓글의 id 저장
+                        }));
+                        return {
+                            ...review,
+                            comments: commentsWithIds, // 해당 리뷰의 댓글 목록 추가
+                            reviewId: review.id // 수정된 부분: 리뷰 ID 저장
+                        };
+                    });
+
+                    setReviews(mergedReviews);
+
                 })
                 .catch((error) => {
                     console.error('Error fetching reviews:', error);
                     setReviews([]);
                 });
             checkLikeStatus();
+            checkReviewLike();
         }
+
     }, [id]);
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
-
     // id에 해당하는 영화가 없으면 에러 메시지 출력
     if (!movie) {
         return <div>영화를 찾을 수 없습니다.</div>;
     }
-
     // pop score
     const renderStars = (rating) => {
         const stars = [];
@@ -166,6 +210,59 @@ function MovieDetails() {
         return stars;
     };
 
+    // 리뷰 좋아요 토글
+    const handleReviewLikeToggle = async (reviewId) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            const liked = await checkReviewLike(reviewId); // 리뷰의 좋아요 상태 확인
+            if (!liked) {
+                await addReviewLike(reviewId); // 리뷰 좋아요 추가
+                console.log("추가함", reviewId)
+            } else {
+                await deleteReviewLike(reviewId); // 리뷰 좋아요 삭제
+                console.log("삭제함", reviewId)
+            }
+            // 좋아요 상태 업데이트
+            const updatedReviews = reviews.map(review =>
+                review.reviewId === reviewId ? { ...review, isLiked: !liked } : review
+            );
+            setReviews(updatedReviews);
+        } catch (error) {
+            console.error('Error toggling review like status:', error);
+        }
+    };
+    // 리뷰 좋아요 추가
+    const addReviewLike = async (reviewId) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            await axios.post(`/reviews/addLike?reviewId=${reviewId}`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            console.log('됐심더.')
+
+        } catch (error) {
+            console.error('Error adding review like:', error);
+        }
+    };
+    // 리뷰 좋아요 삭제
+    const deleteReviewLike = async (reviewId) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            await axios.delete(`/reviews/deleteLike?reviewId=${reviewId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            console.log('삭제 완!')
+
+        } catch (error) {
+            console.error('Error deleting review like:', error);
+        }
+    };
+
+
     // 리뷰쓰기 버튼 클릭 시
     const handleSubmitReview = () => {
         if (isLoggedIn) {
@@ -178,6 +275,60 @@ function MovieDetails() {
     const closeModal = () => {
         setReviewPopup(false);
         setLoginPopup(false);
+    };
+    // 댓글 열기
+    const handleCommentToggle = (index) => {
+        setReviews(prevReviews => prevReviews.map((review, idx) => {
+            if (idx === index) {
+                return { ...review, showComments: !review.showComments };
+            }
+            return review;
+        }));
+    };
+    // 댓글 쓰기 토글
+    const handleCommentWriteToggle = (index) => {
+        setCommentInputs(prevInputs => {
+            const updatedInputs = [...prevInputs];
+            updatedInputs[index] = !updatedInputs[index];
+            return updatedInputs;
+        });
+    };
+    // 댓글 제출
+    const handleSubmitComment = async (reviewId, index) => {
+        try {
+            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            const response = await axios.post(`/comments/write?reviewId=${reviewId}`, {
+                content: comments[index]
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
+                }
+            });
+            // 댓글 목록 업데이트
+            setReviews(prevReviews => prevReviews.map((review, idx) => {
+                if (idx === index) {
+                    return { ...review, comments: [...review.comments, response.data] };
+                }
+                return review;
+            }));
+            // 댓글 입력란 초기화
+            setComments(prevComments => {
+                const updatedComments = [...prevComments];
+                updatedComments[index] = '';
+                return updatedComments;
+            });
+        } catch (error) {
+            console.error('Error submitting comment:', error);
+        }
+    };
+    // 댓글 입력 값 변경
+    const handleCommentChange = (e, index) => {
+        const { value } = e.target;
+        setComments(prevComments => {
+            const updatedComments = [...prevComments];
+            updatedComments[index] = value;
+            return updatedComments;
+        });
     };
 
     return (
@@ -200,7 +351,6 @@ function MovieDetails() {
                     <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
                 )}
             </div>
-
 
             <div className='info-container'>
                 <div className="info-section">
@@ -236,17 +386,51 @@ function MovieDetails() {
                                     <p className='review_nickname'>{review.nickname}</p>
                                     <p className='review_popScore'>{review.popScore}</p>
                                     <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
+                                    {/* 댓글 쓰기 버튼 */}
+                                    <img
+                                        src='/img/comment.png'
+                                        alt='write_comment'
+                                        className='write_comment'
+                                        onClick={() => handleCommentWriteToggle(index)}
+                                    />
                                     {/* 좋아요 버튼 */}
-                                    {/* <img
-                                        src={likedReviews.includes(index) ? '/img/heart_full.png' : '/img/heart_empty.png'}
+                                    <img
+                                        src={checkReviewLike ? '/img/heart_full.png' : '/img/heart_empty.png'}
                                         alt='reivew_likes'
                                         className='review_likes'
-                                        onClick={() => toggleLike(index)}
-                                    /> */}
-                                    {/* <img src='/img/heart_empty.png' alt='reivew_likes' className='review_likes' /> */}
+                                        onClick={() => handleReviewLikeToggle(review.id)}
+                                    />
                                 </div>
-                                <hr className='review_hr' />
                                 <p className='review_content'>{review.content}</p>
+                                <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
+                                {/* 댓글 목록 */}
+                                {review.comments && review.showComments && (
+                                    <div className="comment-list">
+                                        {review.comments.map((comment, commentIndex) => (
+                                            <div key={commentIndex} className="comment">
+                                                <p>{comment.content}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {/* 댓글 입력란 */}
+                                {isLoggedIn && commentInputs[index] && (
+                                    <div className="comment-input">
+                                        <input
+                                            type="text"
+                                            placeholder="댓글을 입력하세요..."
+                                            value={comments[index] || ''}
+                                            onChange={(e) => handleCommentChange(e, index)}
+                                        />
+                                        <button onClick={() => handleSubmitComment(review.reviewId, index)}>등록</button>
+                                    </div>
+                                )}
+                                {!isLoggedIn && commentInputs[index] && (
+                                    <div>
+                                        <p>댓글을 작성하려면 로그인하세요.</p>
+                                    </div>
+                                )}
+
                             </div>
                         ))}
                     </div>

@@ -156,14 +156,23 @@
     vertical-align: 50%;
 }
 
+.write_comment {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    filter: invert(100%);
+    float: right;
+    margin-top: 7px;
+}
+
 .review_likes {
     width: 20px;
     height: 20px;
-    margin-bottom: -1%;
     display: inline-block;
     filter: invert(100%);
     float: right;
     margin-top: 10px;
+    margin-right: 5px;
 }
 
 .movie_likes {
