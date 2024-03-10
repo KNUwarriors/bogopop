@@ -1,4 +1,4 @@
-<img width="1280" alt="Untitled4" src="https://github.com/KNUwarriors/bogopop/assets/98182362/734bfc06-813b-41e2-8e0f-63da90d203d9">영화 리뷰 웹사이트: 보고팝!(BOGOPOP!)
+영화 리뷰 웹사이트: 보고팝!(BOGOPOP!)
 =================
 
 ### 1. 프로젝트 소개
@@ -31,11 +31,12 @@
 
 <details>
   <summary>영화 상세 페이지</summary>
-    
+    <img width="1269" alt="Untitled8" src="https://github.com/KNUwarriors/bogopop/assets/98182362/ac263224-47f0-455a-abb2-3cd3e66567c7">
     <div>
     <ul>
-      <li>이번 주 인기 영화 출력(좌우 화살표 버튼으로 드래그 기능), 영화포스터 클릭 시 해당 영화페이지로 이동</li>
-      <li>장르 별 영화 출력(좌우 화살표 버튼으로 드래그 기능), 영화포스터 클릭 시 해당 영화페이지로 이동</li>
+      <li>영화 포스터 하단의 하트버튼으로 '영화 좋아요' 기능 가능</li>
+      <li>영화의 상세정보(감독, 배우, 줄거리) 출력</li>
+      li>영화 예고편 영상 출</li>
     </ul>
   </div>
 </details>
