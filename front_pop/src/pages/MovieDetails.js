@@ -16,6 +16,7 @@ function MovieDetails() {
     const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
     const [comments, setComments] = useState([]);
     const [commentInputs, setCommentInputs] = useState(Array(reviews.length).fill(false));
+    const [liked, setLiked] = useState(false)   // 리뷰 좋아요 여부
 
     const checkAuthentication = async () => {
         try {
@@ -87,7 +88,6 @@ function MovieDetails() {
                     Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
                 }
             });
-            console.log(response.data)
             return response.data; // 좋아요 상태 반환
         } catch (error) {
             console.error('Error checking review like status:', error);
@@ -138,6 +138,7 @@ function MovieDetails() {
                         axios.get(`/comments?reviewId=${reviewId}`)
                     );
 
+
                     // 모든 댓글 요청을 병렬로 실행하고 기다림
                     const commentsData = await Promise.all(commentRequests);
 
@@ -156,17 +157,18 @@ function MovieDetails() {
                     });
 
                     setReviews(mergedReviews);
-
                 })
                 .catch((error) => {
                     console.error('Error fetching reviews:', error);
                     setReviews([]);
                 });
             checkLikeStatus();
-            checkReviewLike();
+            checkReviewLike(id);
         }
 
     }, [id]);
+
+
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
@@ -213,7 +215,6 @@ function MovieDetails() {
     // 리뷰 좋아요 토글
     const handleReviewLikeToggle = async (reviewId) => {
         try {
-            const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
             const liked = await checkReviewLike(reviewId); // 리뷰의 좋아요 상태 확인
             if (!liked) {
                 await addReviewLike(reviewId); // 리뷰 좋아요 추가
@@ -395,7 +396,7 @@ function MovieDetails() {
                                     />
                                     {/* 좋아요 버튼 */}
                                     <img
-                                        src={checkReviewLike ? '/img/heart_full.png' : '/img/heart_empty.png'}
+                                        src={checkReviewLike(review.id) ? '/img/heart_full.png' : '/img/heart_empty.png'}
                                         alt='reivew_likes'
                                         className='review_likes'
                                         onClick={() => handleReviewLikeToggle(review.id)}
