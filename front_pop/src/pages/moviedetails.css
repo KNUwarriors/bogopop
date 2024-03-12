@@ -174,13 +174,19 @@
     margin-top: 10px;
     margin-right: 5px;
 }
-
+.review_likes_cnt{
+    color: white;
+}
 .movie_likes {
     width: 40px;
     height: 40px;
     margin-bottom: -1%;
     display: inline-block;
     filter: invert(100%);
+}
+
+.movie_likes_cnt{
+    color: white;
 }
 
 hr {

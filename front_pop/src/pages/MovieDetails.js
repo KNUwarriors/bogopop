@@ -15,10 +15,7 @@ function MovieDetails() {
     const [LoginPopup, setLoginPopup] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentInputs, setCommentInputs] = useState(Array(reviews.length).fill(false));
-    
-    //없애..?
     const [isLiked, setIsLiked] = useState(false); // 영화 좋아요 여부 상태
-
     const [reviewLikes, setReviewLikes] = useState({}); // 리뷰 좋아요 상태를 저장할 객체
 
     const checkAuthentication = async () => {
@@ -53,7 +50,6 @@ function MovieDetails() {
                 }
             });
             setIsLiked(response.data); // 좋아요 상태 업데이트
-            // console.log(response.data)
         } catch (error) {
             console.error('좋아요 상태 확인 중 오류 발생:', error);
         }
@@ -75,13 +71,11 @@ function MovieDetails() {
                     }
                 });
             }
-            // 상태 업데이트
             setIsLiked(!isLiked);
         } catch (error) {
             console.error('Error toggling like status:', error);
         }
     };
-
     // 리뷰 좋아요 상태 확인
     const checkReviewLike = async (reviewId) => {
         try {
@@ -105,7 +99,6 @@ function MovieDetails() {
     useEffect(() => {
         axios.get(`/movies`)
             .then((response) => {
-                // 가져온 데이터에서 이미지 URL만 추출하여 저장
                 const moviesWithImages = response.data.map(movie => ({
                     id: movie.id,
                     korean_title: movie.korean_title,
@@ -118,6 +111,7 @@ function MovieDetails() {
                     directors: formatArrayToString(movie.directors),
                     cast: formatArrayToString(movie.cast),
                     trailer: getVideoIdFromUrl(movie.trailer),
+                    likes: movie.likes,
                 }));
 
                 setMovieData(moviesWithImages);
@@ -132,23 +126,16 @@ function MovieDetails() {
                 .then(async (response) => {
                     console.log(response.data);
                     const reviewsData = response.data;
-
-                    // 리뷰 id 배열 생성
                     const reviewIds = reviewsData.map(review => review.id);
-
-                    // 각 리뷰 id에 대한 댓글 가져오기
                     const commentRequests = reviewIds.map(reviewId =>
                         axios.get(`/comments?reviewId=${reviewId}`)
                     );
-
                     // 리뷰 목록을 가져올 때 각 리뷰에 대한 좋아요 상태도 함께 가져오기
                     const reviewsWithLikes = await Promise.all(reviewsData.map(async review => {
                         const liked = await checkReviewLike(review.id);
                         return { ...review, isLiked: liked };
                     }));
-
                     setReviews(reviewsWithLikes);
-
                     //추가
                     const reviewLikesObj = {};
                     reviewIds.forEach(async reviewId => {
@@ -157,13 +144,8 @@ function MovieDetails() {
                     });
                     setReviewLikes(reviewLikesObj);
 
-
-                    // 모든 댓글 요청을 병렬로 실행하고 기다림
                     const commentsData = await Promise.all(commentRequests);
-
-                    // 리뷰와 댓글을 합치기 및 리뷰 ID 저장
                     const mergedReviews = reviewsData.map((review, index) => {
-                        // 리뷰의 댓글 목록과 각 댓글의 id를 함께 저장
                         const commentsWithIds = commentsData[index].data.map(comment => ({
                             ...comment,
                             id: comment.id // 댓글의 id 저장
@@ -174,7 +156,6 @@ function MovieDetails() {
                             reviewId: review.id // 수정된 부분: 리뷰 ID 저장
                         };
                     });
-
                     setReviews(mergedReviews);
                 })
                 .catch((error) => {
@@ -182,14 +163,11 @@ function MovieDetails() {
                     setReviews([]);
                 });
             checkLikeStatus();
-            
         }
-
     }, [id]);
 
     // id에 해당하는 영화 정보 찾기
     const movie = movieData.find((movie) => movie.id === parseInt(id, 10));
-    // id에 해당하는 영화가 없으면 에러 메시지 출력
     if (!movie) {
         return <div>영화를 찾을 수 없습니다.</div>;
     }
@@ -228,7 +206,6 @@ function MovieDetails() {
         }
         return stars;
     };
-
     // 리뷰 좋아요 토글
     const handleReviewLikeToggle = async (reviewId) => {
         try {
@@ -247,7 +224,6 @@ function MovieDetails() {
             console.error('Error toggling review like status:', error);
         }
     };
-
     // 리뷰 좋아요 추가
     const addReviewLike = async (reviewId) => {
         try {
@@ -278,8 +254,6 @@ function MovieDetails() {
             console.error('Error deleting review like:', error);
         }
     };
-
-
     // 리뷰쓰기 버튼 클릭 시
     const handleSubmitReview = () => {
         if (isLoggedIn) {
@@ -357,6 +331,7 @@ function MovieDetails() {
                     className='movie_likes'
                     onClick={handleLikeToggle}
                 />
+                <p className='movie_likes_cnt'>{movie.likes}</p>
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
                 <button className="review_btn" onClick={handleSubmitReview}>리뷰 쓰기</button>
                 {ReviewPopup && (
@@ -366,7 +341,6 @@ function MovieDetails() {
                     <SignIn isOpen={setLoginPopup} setLoggedIn={setLoggedIn} onClose={closeModal} />
                 )}
             </div>
-
             <div className='info-container'>
                 <div className="info-section">
                     <div className='title-section'>
@@ -374,23 +348,12 @@ function MovieDetails() {
                         <p className='release_year'>{movie.release_year}</p>
                     </div>
                     <p className='original_title'>{movie.original_title}</p>
-                    <YouTube
-                        videoId={movie.trailer}
-                        opts={{
-                            width: "560",
-                            height: "315",
-                            playerVars: {
-                                autoplay: 1,
-                                rel: 0,
-                                modestbranding: 1,
-                            },
-                        }}
-                        onEnd={(e) => { e.target.stopVideo(0); }}
-                    />
+                    <YouTube videoId={movie.trailer} opts={{ width: "560", height: "315", playerVars: { autoplay: 1, rel: 0, modestbranding: 1, }, }} onEnd={(e) => { e.target.stopVideo(0); }} />
                     <p className='overview'>{movie.overview}</p>
                     <p className='directors'>감독: {movie.directors}</p>
                     <p className='cast'>출연진: {movie.cast}</p>
                     <hr />
+                    {/* 리뷰 목록 */}
                     <div className="reviews">
                         <h3>리뷰</h3>
                         {reviews.map((review, index) => (
@@ -400,15 +363,25 @@ function MovieDetails() {
                                     <p className='review_nickname'>{review.nickname}</p>
                                     <p className='review_popScore'>{review.popScore}</p>
                                     <img src='/img/corn_pop.png' alt='reivew_popCorn' className='review_popCorn' />
+                                    {/* 댓글 쓰기 버튼 */}
+                                    <img
+                                        src='/img/comment.png'
+                                        alt='write_comment'
+                                        className='write_comment'
+                                        onClick={() => handleCommentWriteToggle(index)}
+                                    />
+                                    {/* 좋아요 버튼 */}
                                     <img
                                         src={reviewLikes[review.id] ? '/img/heart_full.png' : '/img/heart_empty.png'}
                                         alt='reivew_likes'
                                         className='review_likes'
                                         onClick={() => handleReviewLikeToggle(review.id)}
                                     />
+                                    {/* <p className='review_likes_cnt'>{review.likes}</p> */}
                                 </div>
                                 <p className='review_content'>{review.content}</p>
                                 <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
+                                {/* 댓글 목록 */}
                                 {review.comments && review.showComments && (
                                     <div className="comment-list">
                                         {review.comments.map((comment, commentIndex) => (
@@ -418,6 +391,7 @@ function MovieDetails() {
                                         ))}
                                     </div>
                                 )}
+                                {/* 댓글 입력란 */}
                                 {isLoggedIn && commentInputs[index] && (
                                     <div className="comment-input">
                                         <input
@@ -456,6 +430,3 @@ function getVideoIdFromUrl(url) {
     const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/);
     return match && match[1];
 }
-
-
-
