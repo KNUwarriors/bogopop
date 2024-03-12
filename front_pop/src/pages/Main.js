@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Main() {
     const [movieData, setMovieData] = useState([]);
+    const [randomMovie, setRandomMovie] = useState(null); // 추가된 부분, 메인페이지 랜덤배너
     const containerRef = useRef(null);
     const [isLeftButtonVisible, setIsLeftButtonVisible] = useState(true);
     const [isRightButtonVisible, setIsRightButtonVisible] = useState(true);
@@ -32,9 +33,14 @@ function Main() {
                     id: movie.id,
                     korean_title: movie.korean_title,
                     poster_path: movie.poster_path,
+                    backdrop_path: movie.backdrop_path
                 }));
 
                 setMovieData(moviesWithImages);
+
+                // 랜덤으로 영화 선택
+                const randomIndex = Math.floor(Math.random() * moviesWithImages.length);
+                setRandomMovie(moviesWithImages[randomIndex]);
             })
             .catch((error) => {
                 console.error('Error fetching movie data:', error);
@@ -56,11 +62,13 @@ function Main() {
 
     return (
         <div>
-            <Link className='MainTopImage' to={'/'}>
-                <div className='gradientOverlay'></div>
-                <img src='/img/MainTop.jpg' alt="MainImage" className="mainImage" />
-                <div className='textOverlay'><h2>오펜하이머</h2></div>
-            </Link>
+            {randomMovie && ( // randomMovie가 있는 경우에만 MainTopImage를 표시
+                <Link className='MainTopImage' to={`/movies/${randomMovie.id}`}>
+                    <div className='gradientOverlay'></div>
+                    <img src={randomMovie.backdrop_path} alt="MainImage" className="mainImage" />
+                    <div className='textOverlay'><h2>{randomMovie.korean_title}</h2></div>
+                </Link>
+            )}
 
             <h1>이번 주 인기 영화!</h1>
 
