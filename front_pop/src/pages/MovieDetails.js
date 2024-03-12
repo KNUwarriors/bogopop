@@ -85,6 +85,7 @@ function MovieDetails() {
                     Authorization: `Bearer ${token}`
                 }
             });
+            console.log(reviewLikes[reviewId]);
             return response.data;
         } catch (error) {
             console.error('Error checking review like status:', error);
@@ -113,7 +114,6 @@ function MovieDetails() {
                     trailer: getVideoIdFromUrl(movie.trailer),
                     likes: movie.likes,
                 }));
-
                 setMovieData(moviesWithImages);
             })
             .catch((error) => {
@@ -124,25 +124,32 @@ function MovieDetails() {
         if (id) {
             axios.get(`/reviews?movieId=${id}`)
                 .then(async (response) => {
-                    console.log(response.data);
                     const reviewsData = response.data;
                     const reviewIds = reviewsData.map(review => review.id);
                     const commentRequests = reviewIds.map(reviewId =>
                         axios.get(`/comments?reviewId=${reviewId}`)
                     );
-                    // 리뷰 목록을 가져올 때 각 리뷰에 대한 좋아요 상태도 함께 가져오기
-                    const reviewsWithLikes = await Promise.all(reviewsData.map(async review => {
-                        const liked = await checkReviewLike(review.id);
-                        return { ...review, isLiked: liked };
-                    }));
-                    setReviews(reviewsWithLikes);
-                    //추가
-                    const reviewLikesObj = {};
-                    reviewIds.forEach(async reviewId => {
+
+                    // 모든 리뷰에 대한 좋아요 상태 가져오기
+                    const reviewLikesPromises = reviewIds.map(async reviewId => {
                         const liked = await checkReviewLike(reviewId);
-                        reviewLikesObj[reviewId] = liked;
+                        return { [reviewId]: liked };
                     });
-                    setReviewLikes(reviewLikesObj);
+
+                    Promise.all(reviewLikesPromises)
+                        .then(likesArray => {
+                            const reviewLikesObj = {};
+                            likesArray.forEach(like => {
+                                const reviewId = Object.keys(like)[0];
+                                reviewLikesObj[reviewId] = like[reviewId];
+                            });
+                            setReviewLikes(reviewLikesObj);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching review likes:', error);
+                        });
+
+                    checkLikeStatus();
 
                     const commentsData = await Promise.all(commentRequests);
                     const mergedReviews = reviewsData.map((review, index) => {
@@ -163,6 +170,7 @@ function MovieDetails() {
                     setReviews([]);
                 });
             checkLikeStatus();
+
         }
     }, [id]);
 
@@ -210,6 +218,7 @@ function MovieDetails() {
     const handleReviewLikeToggle = async (reviewId) => {
         try {
             const liked = await checkReviewLike(reviewId);
+            console.log(checkReviewLike(reviewId));
             if (!liked) {
                 await addReviewLike(reviewId);
             } else {
@@ -224,6 +233,7 @@ function MovieDetails() {
             console.error('Error toggling review like status:', error);
         }
     };
+
     // 리뷰 좋아요 추가
     const addReviewLike = async (reviewId) => {
         try {
@@ -377,7 +387,7 @@ function MovieDetails() {
                                         className='review_likes'
                                         onClick={() => handleReviewLikeToggle(review.id)}
                                     />
-                                    {/* <p className='review_likes_cnt'>{review.likes}</p> */}
+                                    <p className='review_likes_cnt'>{review.likes}</p>
                                 </div>
                                 <p className='review_content'>{review.content}</p>
                                 <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
