@@ -55,9 +55,8 @@ public class Movie {
         this.likes = newLikes;
     }
 
-    @Column(nullable = false)
-    private float review_count;
-
+    @Column(name = "review_count")
+    private float reviewCount;
 
 }
 

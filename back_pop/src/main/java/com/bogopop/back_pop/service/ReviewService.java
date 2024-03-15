@@ -33,12 +33,12 @@ public class ReviewService {
 
         // Review 등록하면서 Movie의 Pop Score에도 반영
         Movie movie = movieService.getMovieByMovieId(movieId);
-        float reviewCount = movie.getReview_count();
+        float reviewCount = movie.getReviewCount();
         float newReviewCount = reviewCount + 1;
         float moviePopScore = movie.getPop_score() * reviewCount;
         float newReviewScore = reviewDto.getPopScore() + moviePopScore;
-        movie.setReview_count(newReviewCount);
-        log.info("movie reviewCount: " + movie.getReview_count());
+        movie.setReviewCount(newReviewCount);
+        log.info("movie reviewCount: " + movie.getReviewCount());
         movie.setPop_score(newReviewScore/newReviewCount);
         log.info("movie popScore: " + movie.getPop_score());
         movieRepository.save(movie);
