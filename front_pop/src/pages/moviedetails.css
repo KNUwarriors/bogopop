@@ -176,7 +176,7 @@
     margin-right: 5px;
 }
 
-.review_likes_cnt{
+.review_likes_cnt {
     color: white;
     float: right;
 }
@@ -189,7 +189,7 @@
     filter: invert(100%);
 }
 
-.movie_likes_cnt{
+.movie_likes_cnt {
     color: white;
 }
 
@@ -209,21 +209,23 @@ hr {
     font-size: 18px;
     margin: 1px;
 }
-.comment{
+
+.comment {
     margin-left: 20px;
 }
-.comment_box{
+
+.comment_box {
     display: flex;
     margin-left: 10px;
 }
 
-.comment_nickname{
+.comment_nickname {
     flex: 1;
     font-size: 16px;
     font-weight: bold;
 }
 
-.comment_content{
+.comment_content {
     flex: 4;
     font-size: 16px;
 }
