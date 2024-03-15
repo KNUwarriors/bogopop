@@ -44,8 +44,8 @@ public class Movie {
     @Column(nullable = false)
     private Long likes;
 
-    @Column(nullable = false)
-    private float pop_score;
+    @Column(nullable = false, name = "pop_score")
+    private float popScore;
 
     private boolean adult;
 
@@ -55,7 +55,7 @@ public class Movie {
         this.likes = newLikes;
     }
 
-    @Column(name = "review_count")
+    @Column(name = "review_count", nullable = false)
     private float reviewCount;
 
 }

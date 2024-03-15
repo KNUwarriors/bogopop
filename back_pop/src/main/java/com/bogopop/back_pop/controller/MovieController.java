@@ -40,5 +40,11 @@ public class MovieController {
         return popularMovies;
     }
 
-
+    @GetMapping("/movies/MoviesByPopScore")
+    @ApiOperation("인기영화 20개 출력")
+    @ResponseBody
+    public List<Movie> getMoviesByPopScore() {
+        List<Movie> MoviesByPopScore = movieRepository.findTop20ByOrderByPopScoreDescReviewCountDescIdAsc();
+        return MoviesByPopScore;
+    }
 }

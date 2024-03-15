@@ -35,12 +35,12 @@ public class ReviewService {
         Movie movie = movieService.getMovieByMovieId(movieId);
         float reviewCount = movie.getReviewCount();
         float newReviewCount = reviewCount + 1;
-        float moviePopScore = movie.getPop_score() * reviewCount;
+        float moviePopScore = movie.getPopScore() * reviewCount;
         float newReviewScore = reviewDto.getPopScore() + moviePopScore;
         movie.setReviewCount(newReviewCount);
         log.info("movie reviewCount: " + movie.getReviewCount());
-        movie.setPop_score(newReviewScore/newReviewCount);
-        log.info("movie popScore: " + movie.getPop_score());
+        movie.setPopScore(newReviewScore/newReviewCount);
+        log.info("movie popScore: " + movie.getPopScore());
         movieRepository.save(movie);
 
         return reviewRepository.save(
