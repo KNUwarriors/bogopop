@@ -395,7 +395,11 @@ function MovieDetails() {
                                     <div className="comment-list">
                                         {review.comments.map((comment, commentIndex) => (
                                             <div key={commentIndex} className="comment">
-                                                <p>{comment.content}</p>
+                                                <hr></hr>
+                                                <div className='comment_box'>
+                                                    <p className='comment_nickname'>{comment.nickname}</p>
+                                                    <p className='comment_content'>{comment.content}</p>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

@@ -138,6 +138,7 @@
 
 .review_nickname {
     display: inline;
+    font-weight: bold;
     vertical-align: 50%;
     margin-right: 30px;
     font-size: 20px;
@@ -205,5 +206,24 @@ hr {
 }
 
 .review_content {
+    font-size: 18px;
     margin: 1px;
+}
+.comment{
+    margin-left: 20px;
+}
+.comment_box{
+    display: flex;
+    margin-left: 10px;
+}
+
+.comment_nickname{
+    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.comment_content{
+    flex: 4;
+    font-size: 16px;
 }
