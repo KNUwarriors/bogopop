@@ -85,7 +85,6 @@ function MovieDetails() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(reviewLikes[reviewId]);
             return response.data;
         } catch (error) {
             console.error('Error checking review like status:', error);
@@ -152,11 +151,14 @@ function MovieDetails() {
                     checkLikeStatus();
 
                     const commentsData = await Promise.all(commentRequests);
+                    console.log(commentsData);
                     const mergedReviews = reviewsData.map((review, index) => {
                         const commentsWithIds = commentsData[index].data.map(comment => ({
                             ...comment,
-                            id: comment.id // 댓글의 id 저장
+                            id: comment.id, // 댓글의 id 저장
+                            nickname: comment.nickname
                         }));
+
                         return {
                             ...review,
                             comments: commentsWithIds, // 해당 리뷰의 댓글 목록 추가
@@ -218,7 +220,6 @@ function MovieDetails() {
     const handleReviewLikeToggle = async (reviewId) => {
         try {
             const liked = await checkReviewLike(reviewId);
-            console.log(checkReviewLike(reviewId));
             if (!liked) {
                 await addReviewLike(reviewId);
             } else {
@@ -243,7 +244,6 @@ function MovieDetails() {
                     Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
                 }
             });
-            console.log('됐심더.')
 
         } catch (error) {
             console.error('Error adding review like:', error);
@@ -258,8 +258,6 @@ function MovieDetails() {
                     Authorization: `Bearer ${token}` // 토큰을 Authorization 헤더에 포함하여 보내기
                 }
             });
-            console.log('삭제 완!')
-
         } catch (error) {
             console.error('Error deleting review like:', error);
         }
@@ -387,8 +385,8 @@ function MovieDetails() {
                                         className='review_likes'
                                         onClick={() => handleReviewLikeToggle(review.id)}
                                     />
-                                    <p className='review_likes_cnt'>{review.likes}</p>
-                                    <p className='review_comments_cnt'>{review.comments}</p>
+                                    <p className='review_likes_cnt'>({review.likes})</p>
+
                                 </div>
                                 <p className='review_content'>{review.content}</p>
                                 <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
