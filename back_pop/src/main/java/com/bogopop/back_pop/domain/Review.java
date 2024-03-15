@@ -33,7 +33,7 @@ public class Review {
 
     private Long likes;
 
-    private String comments;
+    private Long comments;
 
     private String nickname;
 
@@ -43,6 +43,9 @@ public class Review {
 
     public void likeChange(long newLikes) {
         this.likes = newLikes;
+    }
+    public void commentsChange(long newComments) {
+        this.comments = newComments;
     }
 
 }

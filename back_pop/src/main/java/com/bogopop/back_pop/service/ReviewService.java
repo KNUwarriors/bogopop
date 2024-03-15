@@ -50,6 +50,7 @@ public class ReviewService {
                         .userId(user.getId())
                         .movieId(movieId)
                         .likes(0L)
+                        .comments(0L)
                         .nickname(user.getNickname())
                         .profile(user.getProfile())
                         .build()
