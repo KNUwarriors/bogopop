@@ -104,7 +104,7 @@ function MovieDetails() {
                     korean_title: movie.korean_title,
                     original_title: movie.original_title,
                     poster_path: movie.poster_path,
-                    pop_score: Math.round(movie.pop_score * 10) / 10,
+                    pop_score: Math.round(movie.popScore * 10) / 10,
                     overview: movie.overview,
                     release_year: movie.release_date.slice(0, 4),
                     release_date: movie.release_date,

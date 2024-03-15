@@ -65,30 +65,39 @@ const MainContainer = ({ title, movieData }) => {
 function Main() {
     const [movieData, setMovieData] = useState([]);
     const [randomMovie, setRandomMovie] = useState(null);
+    const [popularMoviesData, setPopularMoviesData] = useState([]);
+    const [moviesByPopScoreData, setMoviesByPopScoreData] = useState([]);
 
     useEffect(() => {
-        axios.get('/movies/popularMovies')
+        axios.get('/movies/OrderedMovies')
             .then((response) => {
-                const moviesWithImages = response.data.map(movie => ({
+                const data = response.data;
+                const popularMoviesData = data.popularMovies.map(movie => ({
                     id: movie.id,
                     korean_title: movie.korean_title,
                     poster_path: movie.poster_path,
                     backdrop_path: movie.backdrop_path
                 }));
+                setPopularMoviesData(popularMoviesData);
 
-                setMovieData(moviesWithImages);
+                const moviesByPopScoreData = data.moviesByPopScore.map(movie => ({
+                    id: movie.id,
+                    korean_title: movie.korean_title,
+                    poster_path: movie.poster_path,
+                    backdrop_path: movie.backdrop_path
+                }));
+                setMoviesByPopScoreData(moviesByPopScoreData);
 
                 // 랜덤으로 영화 선택
-                const randomIndex = Math.floor(Math.random() * moviesWithImages.length);
-                setRandomMovie(moviesWithImages[randomIndex]);
+                const randomIndex = Math.floor(Math.random() * popularMoviesData.length);
+                setRandomMovie(popularMoviesData[randomIndex]);
             })
             .catch((error) => {
-                console.error('Error fetching movie data:', error);
-                setMovieData([]);
+                console.error('Error fetching ordered movies:', error);
+                setPopularMoviesData([]);
+                setMoviesByPopScoreData([]);
             });
-
     }, []);
-
 
     return (
         <div>
@@ -101,7 +110,8 @@ function Main() {
             )}
 
             <div>
-                <MainContainer title='이번 주 인기 영화' movieData={movieData} />
+                <MainContainer title='이번 주 인기 영화' movieData={popularMoviesData} />
+                <MainContainer title='평점 높은 영화' movieData={moviesByPopScoreData} />
             </div>
         </div>
     );
