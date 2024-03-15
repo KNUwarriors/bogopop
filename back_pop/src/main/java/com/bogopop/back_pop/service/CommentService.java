@@ -41,6 +41,7 @@ public class CommentService {
                         .content(commentDto.getContent())
                         .reviewId(reviewId)
                         .userId(user.getId())
+                        .nickname(user.getNickname())
                         .build()
         );
     }

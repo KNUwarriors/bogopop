@@ -27,6 +27,9 @@ public class Comment {
     private Long userId;
 
     @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
     @CreatedDate // Entity가 생성되어 저장될 때 시간이 자동으로 저장
     private LocalDateTime generated_date;
 
