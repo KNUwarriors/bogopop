@@ -18,4 +18,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findTop20ByOrderByLikesDescReviewCountDescIdAsc();
 
+    List<Movie> findTop20ByOrderByPopScoreDescReviewCountDescIdAsc();
+
 }
