@@ -388,6 +388,7 @@ function MovieDetails() {
                                         onClick={() => handleReviewLikeToggle(review.id)}
                                     />
                                     <p className='review_likes_cnt'>{review.likes}</p>
+                                    <p className='review_comments_cnt'>{review.comments}</p>
                                 </div>
                                 <p className='review_content'>{review.content}</p>
                                 <p className='comment_toggle' onClick={() => handleCommentToggle(index)}> ▼ 댓글 보기</p>
