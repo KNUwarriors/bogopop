@@ -6,6 +6,7 @@ import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.ReviewDto;
 import com.bogopop.back_pop.repository.MovieRepository;
 import com.bogopop.back_pop.repository.ReviewRepository;
+import com.bogopop.back_pop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MovieService movieService;
     private final MovieRepository movieRepository;
+    private final UserRepository userRepository;
 
     public List<Review> getAllByUserId(Long userId){
         return reviewRepository.findAllByUserId(userId);
@@ -33,15 +35,20 @@ public class ReviewService {
 
         // Review 등록하면서 Movie의 Pop Score에도 반영
         Movie movie = movieService.getMovieByMovieId(movieId);
-        float reviewCount = movie.getReviewCount();
-        float newReviewCount = reviewCount + 1;
-        float moviePopScore = movie.getPopScore() * reviewCount;
+        float movieReviewCount = movie.getReviewCount();
+        float newReviewCount = movieReviewCount + 1;
+        float moviePopScore = movie.getPopScore() * movieReviewCount;
         float newReviewScore = reviewDto.getPopScore() + moviePopScore;
         movie.setReviewCount(newReviewCount);
-        log.info("movie reviewCount: " + movie.getReviewCount());
+        log.info("movie movieReviewCount: " + movie.getReviewCount());
         movie.setPopScore(newReviewScore/newReviewCount);
         log.info("movie popScore: " + movie.getPopScore());
         movieRepository.save(movie);
+
+        // Review 등록하면서 User의 Review Count에도 반영
+        Long userReviewCount = user.getReviewCommentCount();
+        user.setReviewCommentCount(userReviewCount + 1);
+        userRepository.save(user);
 
         return reviewRepository.save(
                 Review.builder()

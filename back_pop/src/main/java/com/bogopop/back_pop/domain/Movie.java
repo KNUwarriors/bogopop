@@ -44,16 +44,10 @@ public class Movie {
     @Column(nullable = false)
     private Long likes;
 
-    @Column(nullable = false, name = "pop_score")
+    @Column(name = "pop_score", nullable = false)
     private float popScore;
 
     private boolean adult;
-
-
-    // 좋아요 수 변경 메서드
-    public void likeChange(long newLikes) {
-        this.likes = newLikes;
-    }
 
     @Column(name = "review_count", nullable = false)
     private float reviewCount;

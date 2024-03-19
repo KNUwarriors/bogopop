@@ -33,6 +33,7 @@ public class Review {
 
     private Long likes;
 
+    @Column(nullable = false)
     private Long comments;
 
     private String nickname;
@@ -40,12 +41,5 @@ public class Review {
     private float popScore;
 
     private String profile;
-
-    public void likeChange(long newLikes) {
-        this.likes = newLikes;
-    }
-    public void commentsChange(long newComments) {
-        this.comments = newComments;
-    }
 
 }

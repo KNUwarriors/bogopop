@@ -45,4 +45,7 @@ public class User {
 
     @LastModifiedDate // 조회한 Entity의 값을 변경할 때 시간이 자동으로 저장
     private LocalDateTime modified_date;
+
+    @Column(name = "review_comment_count", nullable = false)
+    private Long reviewCommentCount;
 }
