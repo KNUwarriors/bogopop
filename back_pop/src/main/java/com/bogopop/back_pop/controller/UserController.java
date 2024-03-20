@@ -115,4 +115,10 @@ public class UserController {
         return ResponseEntity.ok(userData);
     }
 
+    @GetMapping("/users/ranking")
+    @ApiOperation("유저 랭킹")
+    public List<User> getUserRanking(){
+        return userService.getUserRanking();
+    }
+
 }

@@ -91,4 +91,8 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
+    public List<User> getUserRanking(){
+        return userRepository.findByOrderByReviewCommentCountDesc();
+    }
+
 }
