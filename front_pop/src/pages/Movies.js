@@ -72,7 +72,7 @@ function Movies() {
                     id: movie.id,
                     korean_title: movie.korean_title,
                     poster_path: movie.poster_path,
-                    pop_score: movie.pop_score,
+                    pop_score: movie.popScore,
                     release_date: movie.release_date,
                     genres: movie.genres
                 }));

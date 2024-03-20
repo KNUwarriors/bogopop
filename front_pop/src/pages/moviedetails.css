@@ -18,13 +18,31 @@
     height: auto;
 }
 
+.movie_likes {
+    display: flex;
+    margin-top: 10px;
+}
+
+.movie_likes_icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: -1%;
+    display: inline-block;
+    filter: invert(100%);
+}
+
+.movie_likes_cnt {
+    margin-left: 5px;
+    color: white;
+}
+
 .star-rating {
     display: flex;
     color: white;
     align-items: center;
     font-size: 17px;
     font-weight: lighter;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .star {
@@ -54,6 +72,7 @@
     background: none;
     color: white;
     border-radius: 10px;
+    font-weight: bold;
     font-size: 20px;
 }
 
@@ -181,18 +200,6 @@
     float: right;
 }
 
-.movie_likes {
-    width: 40px;
-    height: 40px;
-    margin-bottom: -1%;
-    display: inline-block;
-    filter: invert(100%);
-}
-
-.movie_likes_cnt {
-    color: white;
-}
-
 hr {
     width: 100%;
     border: none;
@@ -228,4 +235,36 @@ hr {
 .comment_content {
     flex: 4;
     font-size: 16px;
+}
+
+.comment-input {
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+    margin-top: 5px;
+}
+
+.comment-input input[type="text"] {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #666666;
+    background-color: transparent;
+    padding: 8px;
+    outline: none;
+    color: white;
+    font-size: 16px;
+}
+
+.comment-input button {
+    border-radius: 10px;
+    background: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+}
+
+.comment-input button:hover {
+    background-color: #f0f0f0;
+    color: #2b2b2b;
 }

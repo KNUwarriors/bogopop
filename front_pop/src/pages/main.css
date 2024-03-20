@@ -6,16 +6,16 @@
 
 .mainImage {
     width: 100%;
-    height: 400px;
+    height: 450px;
     object-fit: cover;
 }
 
-.gradientOverlay {
+.MainTopOverlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 400px;
+    height: 450px;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 10));
     pointer-events: none;
 }
@@ -23,30 +23,33 @@
 .textOverlay {
     position: absolute;
     bottom: 30px;
-    /* 조정 가능: 텍스트의 하단 여백 조절 */
-    left: 4%;
+    left: 15%;
     color: white;
-    /* 텍스트 색상 */
     text-align: center;
 }
 
 .textOverlay h2 {
     margin: 0;
-    font-size: 40px;
-    /* 텍스트 크기 조절 */
+    font-size: 60px;
 }
 
-.MainPopularWrapper {
+.main-container {
     position: relative;
     overflow: hidden;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
-.MainPopular {
-    display: flex;
-    overflow-x: hidden;
-    margin-top: 20px;
-    touch-action: pan-x;
-    -webkit-overflow-scrolling: touch;
+.container-title {
+    color: white;
+    font-size: 30px;
+    margin: 5px;
+}
+
+.main-container hr {
+    border: none;
+    border-top: 2px solid rgba(204, 204, 204, 0.5);
 }
 
 .moviePoster {

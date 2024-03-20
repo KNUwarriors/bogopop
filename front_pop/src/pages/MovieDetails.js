@@ -296,6 +296,10 @@ function MovieDetails() {
     const handleSubmitComment = async (reviewId, index) => {
         try {
             const token = localStorage.getItem('token'); // 사용자 토큰 가져오기
+            if (!comments[index]) {
+                alert('댓글 내용을 입력하세요.');
+                return;
+            }
             const response = await axios.post(`/comments/write?reviewId=${reviewId}`, {
                 content: comments[index]
             }, {
@@ -334,12 +338,15 @@ function MovieDetails() {
         <div className="movie-details-container">
             <div className="poster-section">
                 <img src={movie.poster_path} alt={movie.korean_title} className='poster-img' />
-                <img
-                    src={isLiked ? '/img/heart_full.png' : '/img/heart_empty.png'}
-                    className='movie_likes'
-                    onClick={handleLikeToggle}
-                />
-                <p className='movie_likes_cnt'>{movie.likes}</p>
+                <div className='movie_likes'>
+                    <img
+                        src={isLiked ? '/img/heart_full.png' : '/img/heart_empty.png'}
+                        className='movie_likes_icon'
+                        onClick={handleLikeToggle}
+                    />
+                    <p className='movie_likes_cnt'>({movie.likes})</p>
+                </div>
+
                 <div className="star-rating">{renderStars(movie.pop_score)} ({movie.pop_score})</div>
                 <button className="review_btn" onClick={handleSubmitReview}>리뷰 쓰기</button>
                 {ReviewPopup && (
@@ -395,11 +402,11 @@ function MovieDetails() {
                                     <div className="comment-list">
                                         {review.comments.map((comment, commentIndex) => (
                                             <div key={commentIndex} className="comment">
-                                                <hr></hr>
                                                 <div className='comment_box'>
                                                     <p className='comment_nickname'>{comment.nickname}</p>
                                                     <p className='comment_content'>{comment.content}</p>
                                                 </div>
+                                                <hr></hr>
                                             </div>
                                         ))}
                                     </div>
