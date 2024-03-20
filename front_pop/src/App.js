@@ -9,6 +9,7 @@ import Lists from './pages/Lists';
 import MovieDetails from './pages/MovieDetails';
 import User from './pages/User';
 import SignIn from './components/SignIn';
+import SearchResult from './pages/SearchResult';
 
 function App() {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/login"
                         element={<SignIn isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} onClose={closeModal} />}
                     />
+                    <Route path="/SearchResult" element={<SearchResult />} />
                 </Routes>
             </div>
 

@@ -86,15 +86,22 @@ function Movies() {
     }, []);
 
     const RomanceMovies = movieData.filter(movie => movie.genres && movie.genres.includes(10749));
+    const AnimationMovies = movieData.filter(movie => movie.genres && movie.genres.includes(16));
+    const FantasyMovies = movieData.filter(movie => movie.genres && movie.genres.includes(14));
     const ActionMovies = movieData.filter(movie => movie.genres && movie.genres.includes(28));
     const CrimeMovies = movieData.filter(movie => movie.genres && movie.genres.includes(80));
+    const HorrorMovies = movieData.filter(movie => movie.genres && movie.genres.includes(27));
+
 
     return (
         <div>
             <MovieContainer title='최근 개봉한 영화' movieData={movieData} />
             <MovieContainer title='로맨스 영화' movieData={RomanceMovies} />
+            <MovieContainer title='애니메이션 영화' movieData={AnimationMovies} />
+            <MovieContainer title='판타지 영화' movieData={FantasyMovies} />
             <MovieContainer title='액션 영화' movieData={ActionMovies} />
             <MovieContainer title='범죄 영화' movieData={CrimeMovies} />
+            <MovieContainer title='공포 영화' movieData={HorrorMovies} />
 
         </div>
     );
