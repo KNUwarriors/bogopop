@@ -27,7 +27,7 @@ public class LikeService {
         if (movie != null && user != null && !movieLikeRepository.existsByUserIdAndMovieId(userId, movieId)) {
             //System.out.println(userId);
             // 영화 좋아요 수 증가
-            movie.likeChange(movie.getLikes() + 1);
+            movie.setLikes(movie.getLikes() + 1);
 
             // 사용자와 영화 간의 좋아요 관계 추가
             movieLikeRepository.save(MovieLike.builder()
@@ -46,7 +46,7 @@ public class LikeService {
 
         if (movie != null && user != null && movieLikeRepository.existsByUserIdAndMovieId(userId, movieId)) {
             // 영화 좋아요 수 감소
-            movie.likeChange(movie.getLikes() - 1);
+            movie.setLikes(movie.getLikes() - 1);
 
             // 사용자와 영화 간의 좋아요 관계 삭제
             movieLikeRepository.deleteByUserIdAndMovieId(userId, movieId);
@@ -67,7 +67,7 @@ public class LikeService {
         if (review != null && user != null && !reviewLikeRepository.existsByUserIdAndReviewId(userId, reviewId)) {
             //System.out.println(userId);
             // 영화 좋아요 수 증가
-            review.likeChange(review.getLikes() + 1);
+            review.setLikes(review.getLikes() + 1);
 
             // 사용자와 영화 간의 좋아요 관계 추가
             reviewLikeRepository.save(ReviewLike.builder()
@@ -86,7 +86,7 @@ public class LikeService {
 
         if (review != null && user != null && reviewLikeRepository.existsByUserIdAndReviewId(userId, reviewId)) {
             // 영화 좋아요 수 감소
-            review.likeChange(review.getLikes() - 1);
+            review.setLikes(review.getLikes() - 1);
 
             // 사용자와 영화 간의 좋아요 관계 삭제
             reviewLikeRepository.deleteByUserIdAndReviewId(userId, reviewId);
