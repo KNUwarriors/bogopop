@@ -39,7 +39,7 @@ const MainContainer = ({ title, movieData }) => {
 
     return (
         <div className='main-container'>
-            <h2>{title}</h2>
+            <h2 className='container-title'>{title}</h2>
             <hr />
             {isLeftButtonVisible && (
                 <button className="scrollButton left" onClick={() => scroll('left')}>&lt;</button>
@@ -103,12 +103,11 @@ function Main() {
         <div>
             {randomMovie && ( // randomMovie가 있는 경우에만 MainTopImage를 표시
                 <Link className='MainTopImage' to={`/movies/${randomMovie.id}`}>
-                    <div className='gradientOverlay'></div>
+                    <div className='MainTopOverlay'></div>
                     <img src={randomMovie.backdrop_path} alt="MainImage" className="mainImage" />
                     <div className='textOverlay'><h2>{randomMovie.korean_title}</h2></div>
                 </Link>
             )}
-
             <div>
                 <MainContainer title='이번 주 인기 영화' movieData={popularMoviesData} />
                 <MainContainer title='평점 높은 영화' movieData={moviesByPopScoreData} />
