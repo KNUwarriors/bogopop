@@ -32,7 +32,7 @@ function Navbar() {
             } else {
                 console.log("검색 결과:", searchResult);
                 // 검색 결과 페이지로 이동
-                navigate("/SearchResult", { state: { searchResult } });
+                navigate("/SearchResult", { state: { searchResult, keyword: searchTerm } });
             }
         } catch (error) {
             console.error("검색 중 에러 발생:", error);
