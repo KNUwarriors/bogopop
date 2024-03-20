@@ -4,14 +4,17 @@ import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.repository.MovieRepository;
 import com.bogopop.back_pop.service.MovieService;
+import com.bogopop.back_pop.service.SearchService;
 import com.bogopop.back_pop.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -25,6 +28,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private SearchService searchService;
 
 
     @GetMapping("/movies")
@@ -62,5 +67,22 @@ public class MovieController {
         orderedMovieData.put("moviesByPopScore", MoviesByPopScore);
 
         return ResponseEntity.ok(orderedMovieData);
+    }
+
+    @GetMapping("/movies/search")
+    @ApiOperation("검색기능")
+    @ResponseBody
+    public ResponseEntity<?> searchMovies(@RequestParam String keyword) {
+        try {
+            List<Movie> searchResult = searchService.searchMovies(keyword);
+
+            if (searchResult == null || searchResult.isEmpty()) {
+                return ResponseEntity.ok("noresult");
+            } else {
+                return ResponseEntity.ok(searchResult);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.ok("noresult");
+        }
     }
 }

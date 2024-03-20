@@ -18,10 +18,10 @@ public class Movie {
     @Column(nullable = false)
     private Long TMDB_id;
 
-    @Column(nullable = false)
-    private String original_title;
-
-    private String korean_title;
+    @Column(name = "original_title", nullable = false)
+    private String originalTitle;
+    @Column(name = "korean_title")
+    private String koreanTitle;
 
     private String directors;
 
