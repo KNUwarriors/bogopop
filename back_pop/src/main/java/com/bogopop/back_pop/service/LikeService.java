@@ -101,5 +101,5 @@ public class LikeService {
     public List<MovieLike> getAllMovieLikeByUserId(Long userId){
         return movieLikeRepository.findAllByUserId(userId);
     }
-
+    public List<ReviewLike> getAllReviewLikeByUserId(Long userId) { return reviewLikeRepository.findAllByUserId(userId);}
 }

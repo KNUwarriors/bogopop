@@ -22,7 +22,7 @@ public class MovieService {
 
     public Movie getMovieByMovieId(Long movieId){
         return movieRepository.findById(movieId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + movieId));
+                .orElseThrow(() -> new UsernameNotFoundException("Movie not found, movieID: " + movieId));
     }
 
 }
