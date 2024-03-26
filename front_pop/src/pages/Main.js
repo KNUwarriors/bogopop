@@ -67,6 +67,7 @@ function Main() {
     const [randomMovie, setRandomMovie] = useState(null);
     const [popularMoviesData, setPopularMoviesData] = useState([]);
     const [moviesByPopScoreData, setMoviesByPopScoreData] = useState([]);
+    const [popularReviewsData, setPopularReviewsData] = useState([]);
 
     useEffect(() => {
         axios.get('/movies/OrderedMovies')
@@ -97,6 +98,25 @@ function Main() {
                 setPopularMoviesData([]);
                 setMoviesByPopScoreData([]);
             });
+        axios.get('/reviews/popularReviews')
+            .then((response) => {
+                const data = response.data;
+
+                const popularReviewsData = data.popularReviews.map(review => ({
+                    id: review.id,
+                    userId: review.userId,
+                    content: review.content,
+                    likes: review.likes
+                }));
+                setPopularReviewsData(popularReviewsData);
+
+                console.log("okok", response.data.popularReviews);
+                console.log("1:", popularReviewsData);
+            })
+            .catch((error) => {
+                console.error('Error fetching popular reviews:', error);
+                setPopularReviewsData([]); // 에러 발생 시 빈 배열로 초기화
+            });
     }, []);
 
     return (
@@ -111,6 +131,15 @@ function Main() {
             <div>
                 <MainContainer title='이번 주 인기 영화' movieData={popularMoviesData} />
                 <MainContainer title='평점 높은 영화' movieData={moviesByPopScoreData} />
+                <div>
+                    <hr />
+                    {popularReviewsData.map((review) => (
+                        <div key={review.id} className='review-item'>
+                            <h3>{review.userId}</h3>
+                            <p>{review.content}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
