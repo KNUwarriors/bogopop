@@ -25,4 +25,8 @@ public class MovieService {
                 .orElseThrow(() -> new UsernameNotFoundException("Movie not found, movieID: " + movieId));
     }
 
+    public List<Movie> getMovieRanking(){
+        return movieRepository.findTop20ByOrderByLikesDescPopScoreDescReviewCountDescIdAsc();
+    }
+
 }

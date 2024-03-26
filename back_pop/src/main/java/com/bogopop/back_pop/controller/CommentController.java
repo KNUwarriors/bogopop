@@ -7,6 +7,7 @@ import com.bogopop.back_pop.service.CommentService;
 import com.bogopop.back_pop.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,14 @@ public class CommentController {
         commentService.save(commentDto, user, reviewId);
 
         return ResponseEntity.ok(commentDto);
+    }
+
+    @DeleteMapping("/comments/delete")
+    @ApiOperation("댓글 삭제")
+    @ResponseBody
+    public ResponseEntity<Long> removeReview(@RequestParam Long commentId){
+        commentService.remove(commentId);
+        return new ResponseEntity<>(commentId, HttpStatus.OK);
     }
 
 }

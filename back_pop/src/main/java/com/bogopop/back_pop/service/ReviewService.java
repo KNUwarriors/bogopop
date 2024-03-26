@@ -69,4 +69,31 @@ public class ReviewService {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new UsernameNotFoundException("Review not found, reviewId: " + reviewId));
     }
+
+    public void remove(Long reviewId){
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+
+        // 영화에 반영
+        Movie movie = movieRepository.findById(review.getMovieId()).orElse(null);
+        float movieReviewCount = movie.getReviewCount();
+        float newReviewCount = movieReviewCount - 1;
+        float moviePopScore = movie.getPopScore() * movieReviewCount;
+        float newReviewScore = moviePopScore - review.getPopScore();
+        // 영화의 리뷰 개수에도 반영
+        movie.setReviewCount(newReviewCount);
+        // 영화의 평점에도 반영
+        movie.setReviewCount(newReviewCount);
+        log.info("movie movieReviewCount: " + movie.getReviewCount());
+        movie.setPopScore(newReviewScore/newReviewCount);
+        log.info("movie popScore: " + movie.getPopScore());
+        movieRepository.save(movie);
+
+        // 유저의 리뷰+댓글 개수에도 반영
+        User user = userRepository.findById(review.getUserId()).orElse(null);
+        user.setReviewCommentCount(user.getReviewCommentCount()-1);
+        userRepository.save(user);
+
+        // 최종적으로 리뷰 삭제
+        reviewRepository.deleteById(reviewId);
+    }
 }

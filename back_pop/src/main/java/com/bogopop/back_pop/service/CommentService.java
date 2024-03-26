@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -52,6 +53,23 @@ public class CommentService {
                         .nickname(user.getNickname())
                         .build()
         );
+    }
+
+    public void remove(Long commentId){
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+
+        // 리뷰의 댓글 개수에도 반영
+        Review review = reviewRepository.findById(comment.getReviewId()).orElse(null);
+        review.setComments(review.getComments()-1);
+        reviewRepository.save(review);
+
+        // 유저의 리뷰+댓글 개수에도 반영
+        User user = userRepository.findById(comment.getUserId()).orElse(null);
+        user.setReviewCommentCount(user.getReviewCommentCount()-1);
+        userRepository.save(user);
+
+        // 최종적으로 댓글 삭제
+        commentRepository.deleteById(commentId);
     }
 
 }

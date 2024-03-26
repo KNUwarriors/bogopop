@@ -21,4 +21,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecific
 
     List<Movie> findTop20ByOrderByPopScoreDescReviewCountDescIdAsc();
 
+    // 영화 랭킹 => 하트 수, 평점, 평점 수 순으로 반영하여 내림차순 정렬
+    List<Movie> findTop20ByOrderByLikesDescPopScoreDescReviewCountDescIdAsc();
+
 }

@@ -1,17 +1,13 @@
 package com.bogopop.back_pop.controller;
 
 import com.bogopop.back_pop.domain.Movie;
-import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.repository.MovieRepository;
 import com.bogopop.back_pop.service.MovieService;
 import com.bogopop.back_pop.service.SearchService;
-import com.bogopop.back_pop.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,5 +80,11 @@ public class MovieController {
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.ok("noresult");
         }
+    }
+
+    @GetMapping("/movies/ranking")
+    @ApiOperation("영화 랭킹")
+    public List<Movie> getMovieRanking(){
+        return movieService.getMovieRanking();
     }
 }

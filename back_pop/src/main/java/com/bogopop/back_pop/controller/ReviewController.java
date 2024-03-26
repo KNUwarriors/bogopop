@@ -9,6 +9,7 @@ import com.bogopop.back_pop.service.ReviewService;
 import com.bogopop.back_pop.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -58,5 +59,13 @@ public class ReviewController {
         Map<String, Object> popularReviewData = new HashMap<>();
         popularReviewData.put("popularReviews", popularReviews);
         return ResponseEntity.ok(popularReviewData);
+    }
+
+    @DeleteMapping("/reviews/delete")
+    @ApiOperation("리뷰 삭제")
+    @ResponseBody
+    public ResponseEntity<Long> removeReview(@RequestParam Long reviewId){
+        reviewService.remove(reviewId);
+        return new ResponseEntity<>(reviewId, HttpStatus.OK);
     }
 }
