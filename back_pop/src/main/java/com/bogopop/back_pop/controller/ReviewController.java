@@ -56,7 +56,7 @@ public class ReviewController {
         List<Review> popularReviews = reviewRepository.findTop10ByOrderByLikesDescIdAsc();
 
         Map<String, Object> popularReviewData = new HashMap<>();
-        popularReviewData.put("popularMovies", popularReviews);
+        popularReviewData.put("popularReviewes", popularReviews);
         return ResponseEntity.ok(popularReviewData);
     }
 }
