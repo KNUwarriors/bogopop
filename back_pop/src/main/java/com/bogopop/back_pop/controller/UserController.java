@@ -1,9 +1,6 @@
 package com.bogopop.back_pop.controller;
 
-import com.bogopop.back_pop.domain.Movie;
-import com.bogopop.back_pop.domain.MovieLike;
-import com.bogopop.back_pop.domain.Review;
-import com.bogopop.back_pop.domain.User;
+import com.bogopop.back_pop.domain.*;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.dto.TokenDto;
 import com.bogopop.back_pop.service.LikeService;
@@ -105,12 +102,23 @@ public class UserController {
             movieLikes.add(movieService.getMovieByMovieId(like.getMovieId()));
         }
 
-        List<Review> reviews = reviewService.getAllByUserId(user.getId());
+        //내가 쓴 리뷰
+        List<Review> myReviews = reviewService.getAllByUserId(user.getId());
+
+        List<ReviewLike> likes2= likeService.getAllReviewLikeByUserId(user.getId());
+        //내가 좋아요한 리뷰
+        List<Review> likedReviews =new LinkedList<>();
+        for (ReviewLike like: likes2){
+            likedReviews.add(reviewService.getReviewByReviewId(like.getReviewId()));
+        }
 
         Map<String, Object> userData = new HashMap<>();
         userData.put("user", user);
         userData.put("movieLikes", movieLikes);
-        userData.put("reviews", reviews);
+        //내가 쓴 리뷰
+        userData.put("myReviews", myReviews);
+        //내가 좋아요 한 리뷰
+        userData.put("likedReviews", likedReviews);
 
         return ResponseEntity.ok(userData);
     }

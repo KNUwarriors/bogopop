@@ -9,6 +9,7 @@ import com.bogopop.back_pop.repository.ReviewRepository;
 import com.bogopop.back_pop.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,5 +63,10 @@ public class ReviewService {
                         .profile(user.getProfile())
                         .build()
         );
+    }
+
+    public Review getReviewByReviewId(Long reviewId){
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new UsernameNotFoundException("Review not found, reviewId: " + reviewId));
     }
 }
