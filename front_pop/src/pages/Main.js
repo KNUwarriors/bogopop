@@ -49,7 +49,7 @@ const MainContainer = ({ title, movieData }) => {
                     return (
                         <Link key={movie.id} to={`/movies/${movie.id}`}>
                             <div className="moviePoster">
-                                <img src={movie.poster_path} alt={movie.korean_title} />
+                                <img src={movie.poster_path} alt={movie.koreanTitle} />
                             </div>
                         </Link>
                     );
@@ -74,7 +74,7 @@ function Main() {
                 const data = response.data;
                 const popularMoviesData = data.popularMovies.map(movie => ({
                     id: movie.id,
-                    korean_title: movie.korean_title,
+                    korean_title: movie.koreanTitle,
                     poster_path: movie.poster_path,
                     backdrop_path: movie.backdrop_path
                 }));
@@ -82,7 +82,7 @@ function Main() {
 
                 const moviesByPopScoreData = data.moviesByPopScore.map(movie => ({
                     id: movie.id,
-                    korean_title: movie.korean_title,
+                    korean_title: movie.koreanTitle,
                     poster_path: movie.poster_path,
                     backdrop_path: movie.backdrop_path
                 }));
