@@ -1,8 +1,10 @@
 package com.bogopop.back_pop.controller;
 
+import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.ReviewDto;
+import com.bogopop.back_pop.repository.ReviewRepository;
 import com.bogopop.back_pop.service.ReviewService;
 import com.bogopop.back_pop.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -12,13 +14,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
+    private final ReviewRepository reviewRepository;
 
     @GetMapping("/reviews")
     @ApiOperation("영화별 리뷰 목록")
@@ -42,5 +47,16 @@ public class ReviewController {
 
         //true or false
         return ResponseEntity.ok(reviewDto);
+    }
+
+    @GetMapping("/reviews/popularReviews")
+    @ApiOperation("인기리뷰(좋아요 순) 10개 출력")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getPopularReviews() {
+        List<Review> popularReviews = reviewRepository.findTop10ByOrderByLikesDescIdAsc();
+
+        Map<String, Object> popularReviewData = new HashMap<>();
+        popularReviewData.put("popularMovies", popularReviews);
+        return ResponseEntity.ok(popularReviewData);
     }
 }
