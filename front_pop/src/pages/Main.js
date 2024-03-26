@@ -101,7 +101,6 @@ function Main() {
         axios.get('/reviews/popularReviews')
             .then((response) => {
                 const data = response.data;
-
                 const popularReviewsData = data.popularReviews.map(review => ({
                     id: review.id,
                     userId: review.userId,
@@ -109,9 +108,6 @@ function Main() {
                     likes: review.likes
                 }));
                 setPopularReviewsData(popularReviewsData);
-
-                console.log("okok", response.data.popularReviews);
-                console.log("1:", popularReviewsData);
             })
             .catch((error) => {
                 console.error('Error fetching popular reviews:', error);
