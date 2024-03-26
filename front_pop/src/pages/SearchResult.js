@@ -1,6 +1,7 @@
 import React from 'react';
 import './searchResult.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+
 
 const SearchResult = () => {
     const location = useLocation();
@@ -17,7 +18,8 @@ const SearchResult = () => {
             <hr></hr>
             {searchResult.map((result, index) => (
                 <div key={index} >
-                    <div className='search_result_movie'>
+
+                    <Link className='search_result_movie' to={`/movies/${result.id}`}>
                         <img src={result.poster_path} className='search_result_poster'></img>
                         <div>
                             <div className='search_result_title_area'>
@@ -30,7 +32,7 @@ const SearchResult = () => {
                                 <p className='search_result_cast'>{result.cast}</p>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                     <hr />
 
                 </div>

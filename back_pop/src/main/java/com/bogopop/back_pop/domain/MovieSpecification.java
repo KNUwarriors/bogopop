@@ -31,6 +31,7 @@ public class MovieSpecification {
             );
             Predicate directorPredicate = criteriaBuilder.like(root.get("directors"), "%" + keyword + "%");
             Predicate castPredicate = criteriaBuilder.like(root.get("cast"), "%" + keyword + "%");
+            Predicate overviewPredicate = criteriaBuilder.like(root.get("overview"), "%"+keyword+"%");
 
             // 장르명으로부터 해당하는 genre_id 찾기
             Long genreId = findGenreId(keyword);
@@ -46,6 +47,7 @@ public class MovieSpecification {
             predicates.add(titlePredicate);
             predicates.add(directorPredicate);
             predicates.add(castPredicate);
+            predicates.add(overviewPredicate);
             if (genrePredicate != null) {
                 predicates.add(genrePredicate);
             }
