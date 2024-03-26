@@ -234,7 +234,6 @@ function MovieDetails() {
             console.error('Error toggling review like status:', error);
         }
     };
-
     // 리뷰 좋아요 추가
     const addReviewLike = async (reviewId) => {
         try {

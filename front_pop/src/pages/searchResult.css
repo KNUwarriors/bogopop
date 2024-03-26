@@ -1,10 +1,24 @@
+.result_page {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.no_search_result{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20%;
+    font-size: 30px;
+
+}
 .search_result {
     color: white;
 }
 
 .search_result_movie {
     display: flex;
-    margin: 50px;
+    margin: 30px;
 }
 
 .search_result_poster {

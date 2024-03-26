@@ -28,7 +28,10 @@ function Navbar() {
             const searchResult = response.data;
 
             if (searchResult === "noresult") {
-                console.log("검색 결과가 없습니다.");
+                console.log("검색 결과가 없습니다.", searchResult);
+                navigate("/SearchResult", { state: { searchResult, keyword: searchTerm } });
+
+
             } else {
                 console.log("검색 결과:", searchResult);
                 // 검색 결과 페이지로 이동
