@@ -69,6 +69,7 @@ function Main() {
     const [moviesByPopScoreData, setMoviesByPopScoreData] = useState([]);
     const [popularReviewsData, setPopularReviewsData] = useState([]);
 
+
     useEffect(() => {
         axios.get('/movies/OrderedMovies')
             .then((response) => {
@@ -103,8 +104,10 @@ function Main() {
                 const data = response.data;
                 const popularReviewsData = data.popularReviews.map(review => ({
                     id: review.id,
-                    userId: review.userId,
+                    movieId: review.movieId,
+                    nickname: review.nickname,
                     content: review.content,
+                    comments: review.comments,
                     likes: review.likes
                 }));
                 setPopularReviewsData(popularReviewsData);
@@ -113,7 +116,26 @@ function Main() {
                 console.error('Error fetching popular reviews:', error);
                 setPopularReviewsData([]); // 에러 발생 시 빈 배열로 초기화
             });
+
+        axios.get(`/movies`)
+            .then((response) => {
+                const moviesWithImages = response.data.map(movie => ({
+                    id: movie.id,
+                    korean_title: movie.koreanTitle,
+                    original_title: movie.originalTitle,
+                    poster_path: movie.poster_path,
+                    release_year: movie.release_date.slice(0, 4),
+                }));
+                setMovieData(moviesWithImages);
+            })
+            .catch((error) => {
+                console.error('Error fetching movie data:', error);
+                setMovieData([]);
+            });
+
+
     }, []);
+
 
     return (
         <div>
@@ -124,22 +146,37 @@ function Main() {
                     <div className='textOverlay'><h2>{randomMovie.korean_title}</h2></div>
                 </Link>
             )}
+            <MainContainer title='이번 주 인기 영화' movieData={popularMoviesData} />
+            <MainContainer title='평점 높은 영화' movieData={moviesByPopScoreData} />
             <div>
-                <MainContainer title='이번 주 인기 영화' movieData={popularMoviesData} />
-                <MainContainer title='평점 높은 영화' movieData={moviesByPopScoreData} />
-                <div>
-                    <hr />
-                    {popularReviewsData.map((review) => (
-                        <div key={review.id} className='review-item'>
-                            <h3>{review.userId}</h3>
-                            <p>{review.content}</p>
+                <h2 className='top_review'>인기 리뷰</h2>
+                <hr className='top_reivew_hr' />
+                {popularReviewsData.map((review) => {
+                    const movieInfo = movieData.find(movie => movie.id === review.movieId);
+                    if (!movieInfo) return null;
+                    return (
+                        <div key={review.id} className='pop_review_item'>
+                            <img src={movieInfo.poster_path} alt={movieInfo.korean_title} className='pop_review_poster' />
+                            <div className='pop_review_container'>
+                                <div className='pop_review_top'>
+                                    <h3 className='pop_review_title'>{movieInfo.korean_title}</h3>
+                                    <p className='pop_review_release_year'>{movieInfo.release_year}</p>
+                                </div>
+                                <div className='pop_review_mid'>
+                                    <p className='pop_review_nickname'>{review.nickname}</p>
+                                    <p className='pop_review_comments'>{review.comments}</p>
+                                </div>
+                                <p className='pop_review_content'>{review.content}</p>
+                                <p className='pop_review_likes'>{review.likes} likes</p>
+                            </div>
+
                         </div>
-                    ))}
-                </div>
+
+                    )
+                })}
+
             </div>
         </div>
     );
 }
 export default Main;
-
-

@@ -61,6 +61,111 @@
     height: auto;
 }
 
+.top_review {
+    color: white;
+    font-size: 30px;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.top_reivew_hr {
+    border: none;
+    border-top: 2px solid rgba(204, 204, 204, 0.5);
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.pop_review_item {
+
+    margin-top: 5%;
+    margin-left: 15%;
+    margin-right: 10%;
+    display: flex;
+}
+
+.pop_review_poster {
+    width: 100px;
+    height: fit-content;
+}
+
+.pop_review_container {
+    margin-left: 5%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.pop_review_top {
+
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    align-items: baseline;
+
+}
+
+.pop_review_title {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+}
+
+.pop_review_release_year {
+    font-size: 15px;
+    margin-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.pop_review_mid {
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    align-items: baseline;
+
+}
+
+.pop_review_nickname {
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.7);
+
+
+}
+
+.pop_review_comments {
+    font-size: 12px;
+    margin-left: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.pop_review_content {
+    font-size: 15px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.7);
+
+
+}
+
+.pop_review_likes {
+    font-size: 15px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    color: rgba(255, 255, 255, 0.7);
+
+}
+
 .scrollButton_main {
     position: absolute;
     top: 50%;

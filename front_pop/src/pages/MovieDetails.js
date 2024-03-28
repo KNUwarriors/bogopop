@@ -101,8 +101,8 @@ function MovieDetails() {
             .then((response) => {
                 const moviesWithImages = response.data.map(movie => ({
                     id: movie.id,
-                    korean_title: movie.korean_title,
-                    original_title: movie.original_title,
+                    korean_title: movie.koreanTitle,
+                    original_title: movie.originalTitle,
                     poster_path: movie.poster_path,
                     pop_score: Math.round(movie.popScore * 10) / 10,
                     overview: movie.overview,
