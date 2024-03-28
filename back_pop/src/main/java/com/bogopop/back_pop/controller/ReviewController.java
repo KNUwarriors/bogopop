@@ -54,7 +54,7 @@ public class ReviewController {
     @ApiOperation("인기리뷰(좋아요 순) 10개 출력")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getPopularReviews() {
-        List<Review> popularReviews = reviewRepository.findTop10ByOrderByLikesDescIdAsc();
+        List<Review> popularReviews = reviewRepository.findTop5ByOrderByLikesDescIdAsc();
 
         Map<String, Object> popularReviewData = new HashMap<>();
         popularReviewData.put("popularReviews", popularReviews);

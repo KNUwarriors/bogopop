@@ -18,7 +18,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Override
     List<Review> findAll();
 
-    List<Review> findTop10ByOrderByLikesDescIdAsc();
+    List<Review> findTop5ByOrderByLikesDescIdAsc();
 
     @Override
     void deleteById(Long aLong);
