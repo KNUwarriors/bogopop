@@ -1,6 +1,5 @@
 package com.bogopop.back_pop.repository;
 
-import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 

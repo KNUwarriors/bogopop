@@ -5,7 +5,6 @@ import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.CommentDto;
 import com.bogopop.back_pop.repository.CommentRepository;
-import com.bogopop.back_pop.repository.ReviewLikeRepository;
 import com.bogopop.back_pop.repository.ReviewRepository;
 import com.bogopop.back_pop.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service

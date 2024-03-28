@@ -1,9 +1,11 @@
 package com.bogopop.back_pop.service;
 
+import com.bogopop.back_pop.domain.Comment;
 import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.ReviewDto;
+import com.bogopop.back_pop.repository.CommentRepository;
 import com.bogopop.back_pop.repository.MovieRepository;
 import com.bogopop.back_pop.repository.ReviewRepository;
 import com.bogopop.back_pop.repository.UserRepository;
@@ -18,9 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final MovieService movieService;
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public List<Review> getAllByUserId(Long userId){
         return reviewRepository.findAllByUserId(userId);
@@ -35,7 +37,7 @@ public class ReviewService {
         }
 
         // Review 등록하면서 Movie의 Pop Score에도 반영
-        Movie movie = movieService.getMovieByMovieId(movieId);
+        Movie movie = movieRepository.findById(movieId).orElse(null);
         float movieReviewCount = movie.getReviewCount();
         float newReviewCount = movieReviewCount + 1;
         float moviePopScore = movie.getPopScore() * movieReviewCount;
@@ -89,11 +91,24 @@ public class ReviewService {
         movieRepository.save(movie);
 
         // 유저의 리뷰+댓글 개수에도 반영
-        User user = userRepository.findById(review.getUserId()).orElse(null);
-        user.setReviewCommentCount(user.getReviewCommentCount()-1);
-        userRepository.save(user);
+        User userForReview = userRepository.findById(review.getUserId()).orElse(null);
+        userForReview.setReviewCommentCount(userForReview.getReviewCommentCount()-1);
+        userRepository.save(userForReview);
+
+        // 리뷰에 댓글이 있다면
+        // => 댓글을 단 유저의 리뷰 + 댓글 수 감소시키기
+        if (review.getComments() > 0) {
+            List<Comment> commentsList = commentRepository.findAllByReviewId(reviewId);
+
+            for(Comment comment : commentsList){
+                User userForComment = userRepository.findById(comment.getUserId()).orElse(null);
+                userForComment.setReviewCommentCount(userForComment.getReviewCommentCount()-1);
+                userRepository.save(userForComment);
+            }
+        }
 
         // 최종적으로 리뷰 삭제
+        // => 외래키 참조를 통해 자동으로 댓글과 좋아요도 함께 삭제
         reviewRepository.deleteById(reviewId);
     }
 }

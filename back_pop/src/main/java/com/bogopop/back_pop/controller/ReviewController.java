@@ -1,6 +1,5 @@
 package com.bogopop.back_pop.controller;
 
-import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.ReviewDto;

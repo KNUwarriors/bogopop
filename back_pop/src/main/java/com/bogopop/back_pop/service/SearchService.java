@@ -3,7 +3,6 @@ package com.bogopop.back_pop.service;
 import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.MovieSpecification;
 import com.bogopop.back_pop.repository.MovieRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
