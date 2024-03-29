@@ -58,12 +58,16 @@ public class CommentService {
 
         // 리뷰의 댓글 개수에도 반영
         Review review = reviewRepository.findById(comment.getReviewId()).orElse(null);
+        log.info("comment count before deleting: " + review.getComments());
         review.setComments(review.getComments()-1);
+        log.info("comment count after deleting: " + review.getComments());
         reviewRepository.save(review);
 
         // 유저의 리뷰+댓글 개수에도 반영
         User user = userRepository.findById(comment.getUserId()).orElse(null);
+        log.info("count before deleting: " + user.getReviewCommentCount());
         user.setReviewCommentCount(user.getReviewCommentCount()-1);
+        log.info("count after deleting: " + user.getReviewCommentCount());
         userRepository.save(user);
 
         // 최종적으로 댓글 삭제
