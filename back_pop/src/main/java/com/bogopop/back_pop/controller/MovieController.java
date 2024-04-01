@@ -84,6 +84,7 @@ public class MovieController {
 
     @GetMapping("/movies/ranking")
     @ApiOperation("영화 랭킹")
+    @ResponseBody
     public List<Movie> getMovieRanking(){
         return movieService.getMovieRanking();
     }
