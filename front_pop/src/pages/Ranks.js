@@ -96,15 +96,20 @@ function Ranks() {
                             <img src={movie.poster_path} alt={movie.korean_title} className='movie-poster' />
                             <div className='movie-info'>
                                 <div className='ranking-title'>
-                                    <p>{movie.korean_title}</p>
-                                    <p>{movie.original_title}</p>
-                                    <p>{movie.release_year}</p>
+                                    <p className='ranking-title-korean'>{movie.korean_title}</p>
+                                    <p className='ranking-title-original'>{movie.original_title}</p>
+                                    <p className='ranking-title-year'>{movie.release_year}</p>
                                 </div>
                                 <div className='ranking-score'>
-                                    <div className="star-rating">{renderStars(movie.pop_score)}</div>
-                                    <p>{movie.pop_score}</p>
+                                    <div className="ranking-score-img">{renderStars(movie.pop_score)}</div>
+                                    <p ranking-score-cnt>({movie.pop_score})</p>
                                 </div>
-
+                                <div className='ranking-likes'>
+                                    <img src='/img/heart_full.png' className='ranking-likes-img'></img>
+                                    <p className='ranking-likes-cnt'>({movie.likes})</p>
+                                </div>
+                                <p className='ranking-directors'>감독: {movie.directors}</p>
+                                <p className='ranking-cast'>출연진: {movie.cast}</p>
                             </div>
                         </div>
                     </Link>

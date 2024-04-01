@@ -3,7 +3,9 @@
     justify-content: space-between;
     background-color: transparent;
     color: #fff;
-    padding: 20px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .rank-section {
@@ -12,89 +14,135 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin: 0 7%;
 }
 
 .link-style {
-    text-decoration: none; /* 링크 밑줄 제거 */
-    color: #ffffff; /* 링크 색상을 하얀색으로 설정 */
-    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이도록 설정 */
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 .rank-item {
-    width: 300px;
-    height: 200px;
-    padding: 20px;
+    width: 90%;
+    height: auto;
+    margin-bottom: 10%;
+    margin-top: 10%;
     align-items: center;
     display: flex;
 }
 
 .movie-poster {
-    width: 150px;
+    width: 200px;
     height: auto;
-    margin-right: 10px;
+    margin-right: 0px;
 }
 
 .movie-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-left: 10%;
-    align-items: flex-start;
+    width: 400px;
+    height: 320px;
+    margin-left: 7%;
+    text-align: left;
 }
 
-.movie-title {
+.ranking-title {
+    display: flex;
+    align-items: baseline;
+}
+
+.ranking-title-korean {
+    flex: 3;
     font-size: 20px;
     font-weight: bold;
+    align-items: baseline;
+
 }
 
+.ranking-title-original {
+    flex: 2;
+    font-size: 15px;
+    margin-left: 10px;
+    align-items: baseline;
 
-.star-rating {
+}
+
+.ranking-title-year {
+    flex: 1;
+    font-size: 15px;
+    margin-left: 10px;
+    align-items: baseline;
+}
+
+.ranking-likes {
+    display: flex;
+    align-items: baseline;
+}
+
+.ranking-likes-img {
+    width: 25px;
+    height: 25px;
+}
+
+.ranking-likes-cnt {
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+.ranking-directors {
+    font-size: 15px;
+}
+
+.ranking-cast {
+    font-size: 15px;
+}
+
+.ranking-score {
     display: flex;
 }
 
-.star {
-    width: 30px;
-    /* 별 크기 조절 */
-    height: 30px;
-    /* 별 크기 조절 */
-    margin-right: 2px;
-    /* 별 사이 간격 조절 */
+.ranking-score-img {
+    display: flex;
+    width: 180px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.ranking-score-cnt {
+    font-size: 15px;
+    margin-left: 5px;
+    text-align: center;
 }
 
 .yellow-star {
     background-image: url('/public/img/corn_pop.png');
-    /* 노란색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .grey-star {
     background-image: url('/public/img/corn_half.png');
-    /* 회색 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .black-star {
     background-image: url('/public/img/corn_unpop.png');
-    /* 까만 별 이미지 경로 지정 */
     background-size: cover;
 }
 
 .user-image {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
     border-radius: 50%;
-    margin: 20px;
+    margin-left: 20%;
+    margin-top: 70px;
 }
 
 .user-name {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-left: 10%;
-    font-size: 20px;
+    margin-top: 70px;
+    margin-left: 20%;
+    font-size: 25px;
     font-weight: bold;
-    align-items: flex-start;
+    align-items: center;
 }
 
 button {
