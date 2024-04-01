@@ -1,5 +1,6 @@
 package com.bogopop.back_pop.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class UserDto {
     private String my_lists;
 
     private String my_reviews;
+
+    private Long reviewCommentCount;
 
     @Builder
     public UserDto(String email, String password) {

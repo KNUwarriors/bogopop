@@ -126,8 +126,15 @@ public class UserController {
     @GetMapping("/users/ranking")
     @ApiOperation("유저 랭킹")
     @ResponseBody
-    public List<User> getUserRanking(){
+    public List<UserDto> getUserRanking(){
         return userService.getUserRanking();
     }
+
+//    @PostMapping("/updateProfile")
+//    public String updateProfile(UserDto user) {
+//        // 사용자 프로필 정보 업데이트 로직
+//        userService.updateUserProfile(user); // 예시로 updateUserProfile 메서드를 사용하여 사용자 정보 업데이트
+//        return "redirect:/profile";
+//    }
 
 }

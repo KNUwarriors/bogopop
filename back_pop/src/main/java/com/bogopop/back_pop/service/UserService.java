@@ -11,12 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 @Transactional
-public class UserService {
+public class  UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -91,8 +92,27 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
-    public List<User> getUserRanking(){
-        return userRepository.findByOrderByReviewCommentCountDesc();
+//    public List<User> getUserRanking(){
+//
+//        return userRepository.findByOrderByReviewCommentCountDesc();
+//    }
+
+
+    public List<UserDto> getUserRanking(){
+        List<User> users = userRepository.findByOrderByReviewCommentCountDesc();
+        List<UserDto> userDtos = new ArrayList<>();
+
+        for (User user : users) {
+            UserDto userDto = UserDto.builder()
+                    .nickname(user.getNickname())
+                    .profile(user.getProfile())
+                    .background(user.getBackground())
+                    .reviewCommentCount(user.getReviewCommentCount())
+                    .build();
+            userDtos.add(userDto);
+        }
+
+        return userDtos;
     }
 
 }
