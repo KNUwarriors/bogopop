@@ -1,5 +1,7 @@
 package com.bogopop.back_pop.service;
 
+import com.bogopop.back_pop.domain.Review;
+import com.bogopop.back_pop.domain.ReviewLike;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
 import com.bogopop.back_pop.repository.UserRepository;
@@ -113,6 +115,18 @@ public class  UserService {
         }
 
         return userDtos;
+    }
+
+    public void updateUserProfile(Long userId, String profileImageName) {
+        // 사용자 ID를 사용하여 사용자를 찾습니다.
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            // 찾은 사용자의 프로필 이미지를 업데이트합니다.
+            user.setProfile(profileImageName);
+            userRepository.save(user);
+        } else {
+            // 사용자를 찾지 못한 경우..
+        }
     }
 
 }
