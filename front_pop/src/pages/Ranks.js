@@ -1,30 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import './ranks.css';
 
 function Ranks() {
-    const movieData = [
-        { id: 1, title: '위시', poster: '/img/poster_1.jpg', rating: 4.9 },
-        { id: 2, title: '로키', poster: '/img/poster_2.jpg', rating: 4.5 },
-        { id: 3, title: '오펜하이머', poster: '/img/poster_3.jpg', rating: 4.3 },
-        { id: 4, title: '아메리칸 셰프', poster: '/img/poster_4.jpg', rating: 4.1 },
-        { id: 5, title: '짱구', poster: '/img/poster_5.jpg', rating: 3.7 },
-        { id: 6, title: '콜바넴', poster: '/img/poster_6.jpg', rating: 3.4 },
-        { id: 7, title: '작은 아씨들', poster: '/img/poster_7.jpg', rating: 2.6 },
-    ];
-
-    const userData = [
-        { id: 1, username: '정원카', profile: '/img/poco.png' },
-        { id: 2, username: '유니쿠', profile: '/img/poco.png' },
-        { id: 3, username: '세현팍', profile: '/img/poco.png' },
-        { id: 4, username: 'KNUwarriors', profile: '/img/poco.png' },
-        { id: 5, username: '보고팝팝', profile: '/img/poco.png' },
-        { id: 6, username: '윌리웡카', profile: '/img/poco.png' },
-    ];
-
+    const [movieData, setMovieData] = useState([]);
+    const [userData, setUserData] = useState([]);
     const itemsToShowInitially = 5;
     const [movieCount, setMovieCount] = useState(itemsToShowInitially);
     const [userCount, setUserCount] = useState(itemsToShowInitially);
+
+    useEffect(() => {
+        axios.get(`/movies/ranking`)
+            .then((response) => {
+                const movieData = response.data.map(movie => ({
+                    id: movie.id,
+                    korean_title: movie.koreanTitle,
+                    poster_path: movie.poster_path,
+                    pop_score: movie.popScore
+                }));
+                setMovieData(movieData);
+            })
+            .catch((error) => {
+                console.error('Error fetching ordered movies:', error);
+                setMovieData([]);
+            });
+        axios.get(`/users/ranking`)
+            .then((response) => {
+                console.log(response.data);
+                const data = response.data;
+                setUserData(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching user ranking:', error);
+                setUserData([]);
+            });
+    }, []);
+
+
 
     const renderStars = (rating) => {
         const stars = [];
@@ -59,11 +72,9 @@ function Ranks() {
         }
         return stars;
     };
-
     const handleMovieMoreClick = () => {
         setMovieCount((prevCount) => prevCount + itemsToShowInitially);
     };
-
     const handleUserMoreClick = () => {
         setUserCount((prevCount) => prevCount + itemsToShowInitially);
     };
@@ -75,10 +86,10 @@ function Ranks() {
                 {movieData.slice(0, movieCount).map((movie) => (
                     <Link key={movie.id} to={`/movies/${movie.id}`} className='link-style'>
                         <div className="rank-item">
-                            <img src={movie.poster} alt={movie.title} className='movie-poster' />
+                            <img src={movie.poster_path} alt={movie.korean_title} className='movie-poster' />
                             <div className='movie-info'>
-                                <h3>{movie.title}</h3>
-                                <div className="star-rating">{renderStars(movie.rating)}</div>
+                                <h3>{movie.korean_title}</h3>
+                                <div className="star-rating">{renderStars(movie.pop_score)}</div>
                             </div>
                         </div>
                     </Link>
