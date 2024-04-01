@@ -125,6 +125,7 @@ public class UserController {
 
     @GetMapping("/users/ranking")
     @ApiOperation("유저 랭킹")
+    @ResponseBody
     public List<User> getUserRanking(){
         return userService.getUserRanking();
     }
