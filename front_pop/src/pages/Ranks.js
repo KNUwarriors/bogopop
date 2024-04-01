@@ -1,31 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import './ranks.css';
 
 function Ranks() {
-    const movieData = [
-        { id: 1, title: '위시', poster: '/img/poster_1.jpg', rating: 4.9 },
-        { id: 2, title: '로키', poster: '/img/poster_2.jpg', rating: 4.5 },
-        { id: 3, title: '오펜하이머', poster: '/img/poster_3.jpg', rating: 4.3 },
-        { id: 4, title: '아메리칸 셰프', poster: '/img/poster_4.jpg', rating: 4.1 },
-        { id: 5, title: '짱구', poster: '/img/poster_5.jpg', rating: 3.7 },
-        { id: 6, title: '콜바넴', poster: '/img/poster_6.jpg', rating: 3.4 },
-        { id: 7, title: '작은 아씨들', poster: '/img/poster_7.jpg', rating: 2.6 },
-    ];
-
-    const userData = [
-        { id: 1, username: '정원카', profile: '/img/poco.png' },
-        { id: 2, username: '유니쿠', profile: '/img/poco.png' },
-        { id: 3, username: '세현팍', profile: '/img/poco.png' },
-        { id: 4, username: 'KNUwarriors', profile: '/img/poco.png' },
-        { id: 5, username: '보고팝팝', profile: '/img/poco.png' },
-        { id: 6, username: '윌리웡카', profile: '/img/poco.png' },
-    ];
-
+    const [movieData, setMovieData] = useState([]);
+    const [userData, setUserData] = useState([]);
     const itemsToShowInitially = 5;
     const [movieCount, setMovieCount] = useState(itemsToShowInitially);
     const [userCount, setUserCount] = useState(itemsToShowInitially);
 
+    useEffect(() => {
+        axios.get(`/movies/ranking`)
+            .then((response) => {
+                const movieData = response.data.map(movie => ({
+                    id: movie.id,
+                    korean_title: movie.koreanTitle,
+                    original_title: movie.originalTitle,
+                    poster_path: movie.poster_path,
+                    pop_score: Math.round(movie.popScore * 10) / 10,
+                    release_year: movie.release_date.slice(0, 4),
+                    directors: formatArrayToString(movie.directors),
+                    cast: formatArrayToString(movie.cast),
+                    likes: movie.likes,
+                }));
+                setMovieData(movieData);
+            })
+            .catch((error) => {
+                console.error('Error fetching ordered movies:', error);
+                setMovieData([]);
+            });
+        axios.get(`/users/ranking`)
+            .then((response) => {
+                const userData = response.data.map(user => ({
+                    id: user.id,
+                    nickname: user.nickname,
+                    profile: user.profile,
+                }))
+                setUserData(userData);
+            })
+            .catch((error) => {
+                console.error('Error fetching user ranking:', error);
+                setUserData([]);
+            });
+    }, []);
+    // pop score
     const renderStars = (rating) => {
         const stars = [];
         const fullStars = Math.floor(rating);
@@ -37,19 +56,20 @@ function Ranks() {
             stars.push(<div key={`yellow-star-${i}`} className="star yellow-star"></div>);
             cnt += 1;
         }
-
-        if (decimalPart < 4) {
-            // 평점이 4.0 ~ 4.3인 경우에는 까만 별 1개 추가
-            stars.push(<div key={`black-star`} className="star black-star"></div>);
-            cnt += 1;
-        } else if (decimalPart < 8) {
-            // 평점이 4.4 ~ 4.7인 경우에는 회색 별 1개 추가
-            stars.push(<div key={`grey-star`} className="star grey-star"></div>);
-            cnt += 1;
-        } else {
-            // 그 외에는 노란 별 추가
-            stars.push(<div key={`yellow-star`} className="star yellow-star"></div>);
-            cnt += 1;
+        if (cnt < 5) {
+            if (decimalPart < 4) {
+                // 평점이 4.0 ~ 4.3인 경우에는 까만 별 1개 추가
+                stars.push(<div key={`black-star`} className="star black-star"></div>);
+                cnt += 1;
+            } else if (decimalPart < 8) {
+                // 평점이 4.4 ~ 4.7인 경우에는 회색 별 1개 추가
+                stars.push(<div key={`grey-star`} className="star grey-star"></div>);
+                cnt += 1;
+            } else {
+                // 그 외에는 노란 별 추가
+                stars.push(<div key={`yellow-star`} className="star yellow-star"></div>);
+                cnt += 1;
+            }
         }
 
         if (cnt < 5) {
@@ -59,11 +79,9 @@ function Ranks() {
         }
         return stars;
     };
-
     const handleMovieMoreClick = () => {
         setMovieCount((prevCount) => prevCount + itemsToShowInitially);
     };
-
     const handleUserMoreClick = () => {
         setUserCount((prevCount) => prevCount + itemsToShowInitially);
     };
@@ -75,10 +93,23 @@ function Ranks() {
                 {movieData.slice(0, movieCount).map((movie) => (
                     <Link key={movie.id} to={`/movies/${movie.id}`} className='link-style'>
                         <div className="rank-item">
-                            <img src={movie.poster} alt={movie.title} className='movie-poster' />
+                            <img src={movie.poster_path} alt={movie.korean_title} className='movie-poster' />
                             <div className='movie-info'>
-                                <h3>{movie.title}</h3>
-                                <div className="star-rating">{renderStars(movie.rating)}</div>
+                                <div className='ranking-title'>
+                                    <p className='ranking-title-korean'>{movie.korean_title}</p>
+                                    <p className='ranking-title-original'>{movie.original_title}</p>
+                                    <p className='ranking-title-year'>{movie.release_year}</p>
+                                </div>
+                                <div className='ranking-score'>
+                                    <div className="ranking-score-img">{renderStars(movie.pop_score)}</div>
+                                    <p ranking-score-cnt>({movie.pop_score})</p>
+                                </div>
+                                <div className='ranking-likes'>
+                                    <img src='/img/heart_full.png' className='ranking-likes-img'></img>
+                                    <p className='ranking-likes-cnt'>({movie.likes})</p>
+                                </div>
+                                <p className='ranking-directors'>감독: {movie.directors}</p>
+                                <p className='ranking-cast'>출연진: {movie.cast}</p>
                             </div>
                         </div>
                     </Link>
@@ -92,8 +123,8 @@ function Ranks() {
                 <h1>유저 랭킹</h1>
                 {userData.slice(0, userCount).map((user) => (
                     <div key={user.id} className="rank-item">
-                        <img src={user.profile} alt={user.username} className='user-image' />
-                        <h3 className='user-name'>{user.username}</h3>
+                        <img src={user.profile} alt={user.nickname} className='user-image' />
+                        <h3 className='user-name'>{user.nickname}</h3>
                     </div>
                 ))}
                 {userCount < userData.length && (
@@ -104,3 +135,10 @@ function Ranks() {
     )
 }
 export default Ranks;
+
+function formatArrayToString(str) {
+    if (typeof str === 'string') {
+        return str.replace(/[\[\]']+/g, '').trim();
+    }
+    return str;
+}
