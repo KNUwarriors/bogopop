@@ -16,8 +16,13 @@ function Ranks() {
                 const movieData = response.data.map(movie => ({
                     id: movie.id,
                     korean_title: movie.koreanTitle,
+                    original_title: movie.originalTitle,
                     poster_path: movie.poster_path,
-                    pop_score: movie.popScore
+                    pop_score: Math.round(movie.popScore * 10) / 10,
+                    release_year: movie.release_date.slice(0, 4),
+                    directors: formatArrayToString(movie.directors),
+                    cast: formatArrayToString(movie.cast),
+                    likes: movie.likes,
                 }));
                 setMovieData(movieData);
             })
@@ -27,18 +32,19 @@ function Ranks() {
             });
         axios.get(`/users/ranking`)
             .then((response) => {
-                console.log(response.data);
-                const data = response.data;
-                setUserData(data);
+                const userData = response.data.map(user => ({
+                    id: user.id,
+                    nickname: user.nickname,
+                    profile: user.profile,
+                }))
+                setUserData(userData);
             })
             .catch((error) => {
                 console.error('Error fetching user ranking:', error);
                 setUserData([]);
             });
     }, []);
-
-
-
+    // pop score
     const renderStars = (rating) => {
         const stars = [];
         const fullStars = Math.floor(rating);
@@ -50,19 +56,20 @@ function Ranks() {
             stars.push(<div key={`yellow-star-${i}`} className="star yellow-star"></div>);
             cnt += 1;
         }
-
-        if (decimalPart < 4) {
-            // 평점이 4.0 ~ 4.3인 경우에는 까만 별 1개 추가
-            stars.push(<div key={`black-star`} className="star black-star"></div>);
-            cnt += 1;
-        } else if (decimalPart < 8) {
-            // 평점이 4.4 ~ 4.7인 경우에는 회색 별 1개 추가
-            stars.push(<div key={`grey-star`} className="star grey-star"></div>);
-            cnt += 1;
-        } else {
-            // 그 외에는 노란 별 추가
-            stars.push(<div key={`yellow-star`} className="star yellow-star"></div>);
-            cnt += 1;
+        if (cnt < 5) {
+            if (decimalPart < 4) {
+                // 평점이 4.0 ~ 4.3인 경우에는 까만 별 1개 추가
+                stars.push(<div key={`black-star`} className="star black-star"></div>);
+                cnt += 1;
+            } else if (decimalPart < 8) {
+                // 평점이 4.4 ~ 4.7인 경우에는 회색 별 1개 추가
+                stars.push(<div key={`grey-star`} className="star grey-star"></div>);
+                cnt += 1;
+            } else {
+                // 그 외에는 노란 별 추가
+                stars.push(<div key={`yellow-star`} className="star yellow-star"></div>);
+                cnt += 1;
+            }
         }
 
         if (cnt < 5) {
@@ -88,8 +95,16 @@ function Ranks() {
                         <div className="rank-item">
                             <img src={movie.poster_path} alt={movie.korean_title} className='movie-poster' />
                             <div className='movie-info'>
-                                <h3>{movie.korean_title}</h3>
-                                <div className="star-rating">{renderStars(movie.pop_score)}</div>
+                                <div className='ranking-title'>
+                                    <p>{movie.korean_title}</p>
+                                    <p>{movie.original_title}</p>
+                                    <p>{movie.release_year}</p>
+                                </div>
+                                <div className='ranking-score'>
+                                    <div className="star-rating">{renderStars(movie.pop_score)}</div>
+                                    <p>{movie.pop_score}</p>
+                                </div>
+
                             </div>
                         </div>
                     </Link>
@@ -103,8 +118,8 @@ function Ranks() {
                 <h1>유저 랭킹</h1>
                 {userData.slice(0, userCount).map((user) => (
                     <div key={user.id} className="rank-item">
-                        <img src={user.profile} alt={user.username} className='user-image' />
-                        <h3 className='user-name'>{user.username}</h3>
+                        <img src={user.profile} alt={user.nickname} className='user-image' />
+                        <h3 className='user-name'>{user.nickname}</h3>
                     </div>
                 ))}
                 {userCount < userData.length && (
@@ -115,3 +130,10 @@ function Ranks() {
     )
 }
 export default Ranks;
+
+function formatArrayToString(str) {
+    if (typeof str === 'string') {
+        return str.replace(/[\[\]']+/g, '').trim();
+    }
+    return str;
+}
