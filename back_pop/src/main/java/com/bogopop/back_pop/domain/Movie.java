@@ -37,7 +37,8 @@ public class Movie {
 
     private String poster_path;
 
-    private String backdrop_path;
+    @Column(name = "backdrop_path")
+    private String backdropPath;
 
     private String trailer;
 
