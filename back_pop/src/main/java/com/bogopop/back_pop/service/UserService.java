@@ -1,9 +1,11 @@
 package com.bogopop.back_pop.service;
 
+import com.bogopop.back_pop.domain.Movie;
 import com.bogopop.back_pop.domain.Review;
 import com.bogopop.back_pop.domain.ReviewLike;
 import com.bogopop.back_pop.domain.User;
 import com.bogopop.back_pop.dto.UserDto;
+import com.bogopop.back_pop.repository.MovieRepository;
 import com.bogopop.back_pop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -123,6 +127,18 @@ public class  UserService {
         if (user != null) {
             // 찾은 사용자의 프로필 이미지를 업데이트합니다.
             user.setProfile(profileImageName);
+            userRepository.save(user);
+        } else {
+            // 사용자를 찾지 못한 경우..
+        }
+    }
+
+    public void updateUserBackground(Long userId, String backdropPath) {
+        // 사용자 ID를 사용하여 사용자를 찾습니다.
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            // 찾은 사용자의 프로필 이미지를 업데이트합니다.
+            user.setBackground(backdropPath);
             userRepository.save(user);
         } else {
             // 사용자를 찾지 못한 경우..

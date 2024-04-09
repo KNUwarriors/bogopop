@@ -17,8 +17,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecific
     //id 오름차순으로 영화 전부다 가져오기
     List<Movie> findAll();
 
+    //좋아요와 리뷰가 많은 영화 20개
     List<Movie> findTop20ByOrderByLikesDescReviewCountDescIdAsc();
 
+    //별점이 높고 리뷰가 많은 영화 20개
     List<Movie> findTop20ByOrderByPopScoreDescReviewCountDescIdAsc();
 
     // 영화 랭킹 => 하트 수, 평점, 평점 수 순으로 반영하여 내림차순 정렬
