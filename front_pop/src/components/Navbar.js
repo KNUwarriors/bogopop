@@ -164,7 +164,7 @@ function Navbar() {
                                 로그아웃
                             </div>
                             <div className="userButton" onClick={handleUserClick}>
-                                <img src={userData.profile} alt="User" className="userImage" />
+                                <img src={`/img/${userData.profile}`} alt="User" className="userImage" />
                             </div>
                         </div>
                     ) : (

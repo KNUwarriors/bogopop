@@ -30,6 +30,11 @@
 
 }
 
+.ProfileImage{
+    width: 150px;
+    height: auto;
+}
+
 .UserImage {
     flex: 0 0 150px;
     width: 150px;

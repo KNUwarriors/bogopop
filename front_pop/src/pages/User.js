@@ -10,6 +10,9 @@ const User = () => {
     const [isLeftButtonVisible, setIsLeftButtonVisible] = useState(true);
     const [isRightButtonVisible, setIsRightButtonVisible] = useState(true);
     const [movieInfoList, setMovieInfoList] = useState([]);
+    const [profileData, setProfileData] = useState([]);
+    const [selectedProfile, setSelectedProfile] = useState(null);
+    const [showProfileModal, setShowProfileModal] = useState(false);
 
     const handleScroll = () => {
         const container = containerRef.current;
@@ -46,6 +49,17 @@ const User = () => {
                 });
                 setUserData(userResponse.data.user);
                 setMovieInfoList(userResponse.data.movieLikes);
+                console.log("유저 데이터입니당: ", userData);
+
+                const profileImages = await axios.get(`/profiles`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setProfileData(profileImages.data);
+
+                console.log(profileData);
+
             } catch (error) {
                 console.error("데이터를 불러오는 데 실패했습니다:", error);
             }
@@ -56,6 +70,23 @@ const User = () => {
     if (!userData) {
         return <div>Loading...</div>;
     }
+    const handleProfileClick = () => {
+        setShowProfileModal(true);
+    };
+    const updateProfile = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            await axios.post(`/profiles/updateProfile?imageName=${selectedProfile}`, { imageName: selectedProfile }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            // 프로필 변경 후 새로고침
+            window.location.reload();
+        } catch (error) {
+            console.error("프로필을 업데이트하는 데 실패했습니다:", error);
+        }
+    };
 
     return (
         <div>
@@ -63,10 +94,24 @@ const User = () => {
                 <div className="gradientOverlay"></div>
                 <img src={userData.background} alt="topimage" className="TopImage" />
                 <div className="UserProfile">
-                    <img src={userData.profile} alt="userimage" className="UserImage" />
+                    <img src={`/img/${userData.profile}`} alt="userimage" className="UserImage" onClick={handleProfileClick} />
                     <h1 className="UserName">{userData.email}</h1>
                 </div>
             </div>
+
+            {showProfileModal && (
+                <div className="ProfileModal">
+                    <h2>프로필 선택</h2>
+                    <div className="ProfileList">
+                        {profileData.map((profile, index) => (
+                            <img key={index} src={`/img/${profile}`} alt="profile" className="ProfileImage" onClick={() => setSelectedProfile(profile)} />
+                        ))}
+                    </div>
+                    <p>{selectedProfile}</p>
+                    <button onClick={updateProfile}>프로필 변경</button> {/* 프로필 선택 버튼 */}
+                </div>
+            )}
+
             <div className="UserBottom">
                 <div className="favorites-container">
                     <h2>좋아요한 영화</h2>
