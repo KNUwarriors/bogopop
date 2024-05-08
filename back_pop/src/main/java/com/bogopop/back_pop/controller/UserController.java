@@ -86,13 +86,13 @@ public class UserController {
     @GetMapping("/user")
     @ApiOperation("현재 로그인된 사용자 정보 조회")
     public ResponseEntity<Map<String, Object>> getCurrentUser() {
-        // 현재 인증된 사용자의 정보를 가져오는 코드를 작성해야 합니다.
+        
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 현재 로그인된 사용자의 이메일을 가져옴
 
         User user = userService.getUserByEmail(userEmail);
         if (user == null) {
-            // 사용자를 찾을 수 없는 경우 404 에러를 반환합니다.
+            // 사용자를 찾을 수 없는 경우 404 에러를 반환
             return ResponseEntity.notFound().build();
         }
 
