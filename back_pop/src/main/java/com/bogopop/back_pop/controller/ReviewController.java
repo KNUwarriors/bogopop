@@ -40,7 +40,7 @@ public class ReviewController {
 
         User user = userService.getUserByEmail(userEmail);
         if (user == null) {
-            // 사용자를 찾을 수 없는 경우 404 에러를 반환합니다.
+            // 사용자를 찾을 수 없는 경우 404 에러를 반환
             return ResponseEntity.notFound().build();
         }
         reviewService.save(reviewDto, user, movieId);
